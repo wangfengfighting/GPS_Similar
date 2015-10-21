@@ -27,7 +27,8 @@ import matplotlib.pyplot as plt
 
 
 def dbscan(EPS,MIN_SAMPLE):
-    Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
+    XX=np.loadtxt(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt",dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
+    #Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
     centers = [[1, 1], [-1, -1], [1, -1]]
     db = DBSCAN(eps=EPS, min_samples=MIN_SAMPLE).fit(XX)
     #db = DBSCAN(eps=0.002, min_samples=10).fit(XX)  3
@@ -54,8 +55,7 @@ def dbscan(EPS,MIN_SAMPLE):
         class_member_mask = (labels == k)
 
         xy = XX[class_member_mask & core_samples_mask]
-        print(xy[:, 0])
-        print  np.array([1]*len(xy[:, 0]))
+
         #ax.scatter(xy[:, 0], xy[:, 1],np.array([1]*len(xy[:, 0])), 'o', markerfacecolor=col,
              #markeredgecolor='k', markersize=8)
         ax.scatter(xy[:, 0], xy[:, 1],np.array([1]*len(xy[:, 0])), c=col)
@@ -84,4 +84,4 @@ def dbscan(EPS,MIN_SAMPLE):
     #plt.show()
     '''
 if __name__=='__main__':
-    dbscan(0.002, 10)
+    dbscan(0.0002, 10)

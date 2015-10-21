@@ -29,9 +29,9 @@ def get_filtered_gps(path):
                        skiprows=1,usecols=(0,1,3,4))
     #gpsdata=np.loadtxt(path, dtype=[('f0',float),('f1',float),('s3',str),('f4',float)],delimiter=',',skiprows=1,usecols=(0,1,3,4))
     print(gpsdata)
-
-
 if __name__=='__main__':
     full=getfullfilepath()
-    g=get_filtered_gps(full[0])
-    print(g)
+    for i in full:
+
+        g=get_filtered_gps(i)
+        print(g)
