@@ -23,8 +23,10 @@ def getfullfilepath():
     print(Fulldirlist)
     return Fulldirlist
 def get_filtered_gps(path):
-    gpsdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','Speed'] ,'formats': ['f18', 'f18', 'S20','f9']},
-                       delimiter=',',converters={3:lambda s:0},skiprows=1,usecols=(0,1,3,4))
+    gpsdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','Speed'] ,'formats': ['f18', 'f18', 'f18','f6']},
+                       delimiter=',',
+                       converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
+                       skiprows=1,usecols=(0,1,3,4))
     #gpsdata=np.loadtxt(path, dtype=[('f0',float),('f1',float),('s3',str),('f4',float)],delimiter=',',skiprows=1,usecols=(0,1,3,4))
     print(gpsdata)
 
