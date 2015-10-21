@@ -25,7 +25,7 @@ class GetDirName:
 
 '''
 if __name__=='__main__':
-    a=GetDir()
+    a=GetDirName()
     dir=a.printPath(".\\GPS_Get_PreProcesser")
     dir.sort()
     print(len(dir))
