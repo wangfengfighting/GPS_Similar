@@ -1,20 +1,13 @@
 __author__ = 'Administrator'
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-import plot_dbscan
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-n = 100
-x1,y1=
-for c, m, zl, zh in [('r', 'o', -50, -25), ('b', '^', -30, -5)]:
-    xs = randrange(n, 23, 32)
-    ys = randrange(n, 0, 100)
-    zs = randrange(n, zl, zh)
-    ax.scatter(xs, ys, zs, c=c, marker=m)
+import mpl_toolkits.mplot3d
 
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
-
+x,y=np.mgrid[-2:2:20j,-2:2:20j]
+z=x*np.exp(-x**2-y**2)
+ax=plt.subplot(111,projection='3d')
+ax.plot_surface(x,y,z,rstride=2,cstride=1,cmap=plt.cm.coolwarm,alpha=0.8)
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
 plt.show()
