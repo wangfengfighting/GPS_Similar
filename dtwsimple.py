@@ -46,5 +46,5 @@ if __name__=='__main__':
     tra1,tra2=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\10-21-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\10-20-2015\\locationGPS.txt")
     testdtw(tra1,tra2)
 
-    tra3,tra4=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-18-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\10-20-2015\\locationGPS.txt")
+    tra3,tra4=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-1-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\10-20-2015\\locationGPS.txt")
     testdtw(tra3,tra4)

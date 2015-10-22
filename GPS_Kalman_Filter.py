@@ -12,6 +12,7 @@ import decimal
 import copy
 import simple_kalman
 import  simple_mid_filter
+import simple_mean_filter
 import distance_mean_filter
 from Find_stop_points.multiple_cluster import *
 def Get_Prime_GpsData(filepath_name):
@@ -23,11 +24,11 @@ def Get_Prime_GpsData(filepath_name):
     data=np.loadtxt(filepath_name,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     drewgps(Latitude,Longitude)
 
-    l,c=(science_cluster(data))
-    print(l)
-    print(c)
-    la=DJ_Cluster(data,0.00000002,5)
-    print(la)
+    #l,c=(science_cluster(data))
+    #print(l)
+    #print(c)
+    #la=DJ_Cluster(data,0.00000002,5)
+    #print(la)
     #drewgps(c[:][0],c[:][1])
     #drewgps(simple_mean_filter.mean_filter(Latitude,4),simple_mean_filter.mean_filter(Longitude,4))
 
@@ -36,9 +37,9 @@ def Get_Prime_GpsData(filepath_name):
 
 
     #drewgps((Latitude),simple_kalman.Kalman(Longitude))
-    #drewgps(simple_mid_filter.filter(Latitude,2),Longitude)
-    g=distance_mean_filter.DistanceFilter(Latitude,Longitude,3)
-    #drewgps(g[0],g[1])
+    #drewgps(simple_mid_filter.filter(Latitude,2),simple_mid_filter.filter(Longitude,3))
+    g=distance_mean_filter.DistanceFilter(Latitude,Longitude,5)
+    drewgps(g[0],g[1])
     print len(Latitude) ,len(g[0])
     #drewgps(simple_mid_filter.filter(Latitude,5),simple_mid_filter.filter(Longitude,5))
     '''
@@ -63,7 +64,7 @@ def Get_Prime_GpsData(filepath_name):
     Lat=KalmanFilterGPS(Latitude)
     Long=KalmanFilterGPS(Longitude)
     #drewgps(Latitude,Long)
-    return Longitude,g[1]
+    return Longitude,simple_mean_filter.mean_filter(Longitude,4)
 def KalmanFilterGPS(gpsData):
     kf = KalmanFilter(initial_state_mean=0.44, n_dim_obs=1)
     afteremGps=kf.filter(gpsData)[0]
@@ -109,7 +110,7 @@ def drowerror(L1,L2):
     plt.show()
 if __name__=='__main__':
     #print(__doc__)
-    la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\10-21-2015\\locationGPS.txt")
+    la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-18-2015\\locationGPS.txt")
     #KalmanFilterGPS()
 
     err=[]

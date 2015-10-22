@@ -60,6 +60,7 @@ def dbscan(EPS,MIN_SAMPLE):
         #ax.scatter(xy[:, 0], xy[:, 1],np.array([1]*len(xy[:, 0])), 'o', markerfacecolor=col,
              #markeredgecolor='k', markersize=8)
         ax.scatter(xx[:, 0], xx[:, 1],np.array([1]*len(xx[:, 0])), c=col)
+        plt.title('Estimated number of clusters: %d' % n_clusters_)
         #xy = XX[class_member_mask & ~core_samples_mask]
         #plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
          #    markeredgecolor='k', markersize=4)
