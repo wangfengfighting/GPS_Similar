@@ -43,23 +43,8 @@ def dtw(X,Y):
 
 if __name__=='__main__':
 
-    tra1,tra2=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-8-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\7-9-2015\\locationGPS.txt")
+    tra1,tra2=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\10-21-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\10-20-2015\\locationGPS.txt")
     testdtw(tra1,tra2)
 
-    tra3,tra4=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-18-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\10-10-2015\\locationGPS.txt")
+    tra3,tra4=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-18-2015\\locationGPS.txt",".\\GPS_Get_PreProcesser\\10-20-2015\\locationGPS.txt")
     testdtw(tra3,tra4)
-
-    x = [1,1,1,10,2,3]
-    y = [1,1,1,2,10,3]
-    a,b,c=dtw(x,y)
-    print(a)
-
-    dist, cost, path = mlpy.dtw_std(x, y, dist_only=False)
-    print(dist)
-    length, path = mlpy.lcs_std(x, y)
-    print(length)
-
-    xx=[[1,2],[2,4],[3,5]]
-    yy=[[1,2],[2,4],[3,5]]
-    #dist1, cost1, path1 = mlpy.lcs_std(xx, yy)
-    print('end')
