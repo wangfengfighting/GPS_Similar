@@ -44,8 +44,12 @@ def writeANS(txtfilename,data):
         file_processGPS.write('\n')
     file_processGPS.close()
 def drewgps(weidu,jindu,date):
-    plt.scatter(jindu,weidu,c='r',marker='.')
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(jindu,weidu,c='r',marker='.')
+    plt.title('location of : %s' % date)
     plt.savefig('.\\GPS_pic\\'+date+'.png',dpi=800)
+    plt.close()
     #plt.show()
 if __name__=='__main__':
     getdir=GetDirName()
@@ -53,5 +57,6 @@ if __name__=='__main__':
     dirlist=getdir.printPath(".\\GPS_Get_PreProcesser")
     print(dirlist)
     for wenjianjia in dirlist:
+        print ".\\GPS_Get_PreProcesser"+  '\\'  +  wenjianjia  +  '\\'  +   'location.txt',wenjianjia
         readfile(".\\GPS_Get_PreProcesser"+  '\\'  +  wenjianjia  +  '\\'  +   'location.txt',wenjianjia)
     #readfile(".\\GPS_Get_PreProcesser\\7-16-2015\\location.txt")

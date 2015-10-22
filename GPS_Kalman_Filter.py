@@ -38,9 +38,9 @@ def Get_Prime_GpsData(filepath_name):
 
     #drewgps((Latitude),simple_kalman.Kalman(Longitude))
     #drewgps(simple_mid_filter.filter(Latitude,2),simple_mid_filter.filter(Longitude,3))
-    g=distance_mean_filter.DistanceFilter(Latitude,Longitude,5)
-    drewgps(g[0],g[1])
-    print len(Latitude) ,len(g[0])
+    #g=distance_mean_filter.DistanceFilter(Latitude,Longitude,5)
+    #drewgps(g[0],g[1])
+    #print len(Latitude) ,len(g[0])
     #drewgps(simple_mid_filter.filter(Latitude,5),simple_mid_filter.filter(Longitude,5))
     '''
     # chang str to float
@@ -112,7 +112,7 @@ if __name__=='__main__':
     #print(__doc__)
     la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-18-2015\\locationGPS.txt")
     #KalmanFilterGPS()
-
+'''
     err=[]
     erraf=[]
     for i in range(1,len(la)):
@@ -126,4 +126,4 @@ if __name__=='__main__':
     plt.subplot(212)
     plt.plot(erraf)
     plt.show()
-
+'''
