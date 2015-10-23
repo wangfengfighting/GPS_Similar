@@ -18,7 +18,7 @@ def GetDistance( lat1, lng1,  lat2,  lng2):
 
     s = 2 * math.asin(math.sqrt(math.pow(math.sin(a/2),2) +math.cos(radLat1)*math.cos(radLat2)*math.pow(math.sin(b/2),2)))
     s = s * EARTH_RADIUS
-    s = (s * 10000)
+    s = (s * 1000)
     return s
 
 def DistanceFilter(La,Lon,winsize):
