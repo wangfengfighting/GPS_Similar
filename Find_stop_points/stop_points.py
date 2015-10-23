@@ -32,26 +32,28 @@ def get_filtered_gps(path):
     print(len(gpsdata))
     detecte_stoppoint(gpsdata,0)
 
-def detecte_stoppoint(gpsdata,startindex):
+def As_stoppoint(x1,y1,t1,x2,y2,t2):
     avgdis=80
-    avgtime=20
-    tempstoppoint=[]
+    avgtime=20.0
+    if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis and t2-t1>=avgtime:
+        return True
+    else:
+        return False
 
-    for index in range(startindex,len(gpsdata)-1):
-        #print distance_mean_filter.GetDistance(gpsdata[index][0],gpsdata[index][1],gpsdata[index+1][0],gpsdata[index+1][1]),'-------'
+def detecte_stoppoint(gpsdata,startindex):
+    global StopPoint
+    temp=[]
+    if startindex==len(gpsdata):
+        print('over----',startindex)
+    else:
 
-        if distance_mean_filter.GetDistance(gpsdata[index][0],gpsdata[index][1],gpsdata[index+1][0],gpsdata[index+1][1])<avgdis:
-            if  gpsdata[index+1][2]-gpsdata[index][2]>avgtime:
-                tempstoppoint.append(list(gpsdata[index]))
-                #print(index)
-                StopPoint.append(tempstoppoint)
-            else:
-                detecte_stoppoint(gpsdata,index+1)
-                break
+        if As_stoppoint(float(gpsdata[startindex][0]),float(gpsdata[startindex][1]),float(gpsdata[startindex][2]),
+                    float(gpsdata[startindex][0]),float(gpsdata[startindex][1]),float(gpsdata[startindex][2])):
+
+            temp.append(gpsdata[startindex+1])
+            detecte_stoppoint(gpsdata,startindex+1)
         else:
-            detecte_stoppoint(gpsdata,index+1)
-            break
-        #break
+            detecte_stoppoint(gpsdata,startindex+1)
 
     #print('最后都会执行的')
 
