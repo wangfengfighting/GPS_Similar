@@ -13,6 +13,8 @@ from getDir import GetDirName
 import datetime
 import time
 import distance_mean_filter
+import sys
+sys.setrecursionlimit(10000)
 StopPoint=[]
 def getfullfilepath():
     getdir=GetDirName()
@@ -33,14 +35,15 @@ def get_filtered_gps(path):
     detecte_stoppoint(gpsdata,0)
 
 def As_stoppoint(x1,y1,t1,x2,y2,t2):
-    avgdis=80
-    avgtime=20.0
-    if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis and t2-t1>=avgtime:
+    avgdis=300
+    avgtime=4.0
+    if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis:
         return True
     else:
         return False
 
 def detecte_stoppoint(gpsdata,startindex):
+    '''
     global StopPoint
     temp=[]
     if startindex==len(gpsdata):
@@ -51,9 +54,39 @@ def detecte_stoppoint(gpsdata,startindex):
                     float(gpsdata[startindex][0]),float(gpsdata[startindex][1]),float(gpsdata[  startindex][2])):
 
             temp.append(gpsdata[startindex+1])
-            detecte_stoppoint(gpsdata,startindex+1)
+            #detecte_stoppoint(gpsdata,startindex+1)
         else:
-            detecte_stoppoint(gpsdata,startindex+1)
+            break
+            #detecte_stoppoint(gpsdata,startindex+1)
+    '''
+    global StopPoint
+    temp=[]
+    temp_distance=[]
+    index=0
+    while index<len(gpsdata)-1:
+
+        temp_distance.append( As_stoppoint(float(gpsdata[index][0]),float(gpsdata[index][1]),float(gpsdata[index][2]),
+                    float(gpsdata[index+1][0]),float(gpsdata[index+1][1]),float(gpsdata[index+1][2])))
+        index+=1
+    print (temp_distance)
+
+
+    temp_start=0
+    temp_end=0
+    for i in range(len(temp_distance)):
+        if temp_distance[i]==True:
+            temp.append(gpsdata[i])
+        else:
+            StopPoint.append(temp)
+            temp=[]
+
+
+
+
+
+
+
+
 
     #print('最后都会执行的')
 
@@ -64,11 +97,12 @@ if __name__=='__main__':
     full=getfullfilepath()
     get_filtered_gps(full[2])
     print('最后结果')
-    print(StopPoint)
+    #print(StopPoint)
     num=0
     print len(StopPoint)
     for i in StopPoint:
+
         for ii in i:
-            num=num+1
+            num+=1
 
     print num,'num'
