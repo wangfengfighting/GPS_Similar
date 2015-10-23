@@ -48,7 +48,7 @@ def detecte_stoppoint(gpsdata,startindex):
     else:
 
         if As_stoppoint(float(gpsdata[startindex][0]),float(gpsdata[startindex][1]),float(gpsdata[startindex][2]),
-                    float(gpsdata[startindex][0]),float(gpsdata[startindex][1]),float(gpsdata[startindex][2])):
+                    float(gpsdata[startindex][0]),float(gpsdata[startindex][1]),float(gpsdata[  startindex][2])):
 
             temp.append(gpsdata[startindex+1])
             detecte_stoppoint(gpsdata,startindex+1)
