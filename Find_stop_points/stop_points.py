@@ -35,7 +35,7 @@ def get_filtered_gps(path):
     detecte_stoppoint(gpsdata,0)
 
 def As_stoppoint(x1,y1,t1,x2,y2,t2):
-    avgdis=300
+    avgdis=230
     avgtime=4.0
     if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis:
         return True
