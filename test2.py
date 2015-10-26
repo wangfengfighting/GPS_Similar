@@ -19,7 +19,7 @@ def solve(eq,var='x'):
 
 
 if __name__=='__main__':
-
+    '''
     x1=[[28.228225, 1],[28.228168,1]]
     y1=[112.999492,112.999898]
     x2=[[28.228047,1],[28.228062,1]]
@@ -32,3 +32,7 @@ if __name__=='__main__':
     print  z2[0]*x_ans+z2[1]
 
     print (sum(np.array(x1))+sum(np.array(x2)))/4,(sum(np.array(y1))+sum(np.array(y2)))/4
+    '''
+    z=[1,2]
+    z.append("gggg")
+    print z

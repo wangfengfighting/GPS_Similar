@@ -32,10 +32,13 @@ def get_filtered_gps(path):
                        skiprows=1,usecols=(0,1,3,4))
     #gpsdata=np.loadtxt(path, dtype=str,delimiter=',',skiprows=1,usecols=(0,1,3,4))
     print(len(gpsdata))
-    detecte_stoppoint(gpsdata,0)
+    gps_stop_point=detecte_stoppoint(gpsdata,0)
+
+    return gps_stop_point
+    #调用 发现stoppoint函数，0 是指的开始位置的index
 
 def As_stoppoint(x1,y1,t1,x2,y2,t2):
-    avgdis=230
+    avgdis=100
     avgtime=4.0
     if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis:
         return True
@@ -81,6 +84,9 @@ def detecte_stoppoint(gpsdata,startindex):
             temp=[]
 
 
+    return StopPoint
+
+
 
 
 
@@ -95,13 +101,14 @@ def detecte_stoppoint(gpsdata,startindex):
 
 if __name__=='__main__':
     full=getfullfilepath()
-    get_filtered_gps(full[2])
+    g=get_filtered_gps(full[2])
     print('最后结果')
     #print(StopPoint)
     num=0
-    print len(StopPoint)
-    for i in StopPoint:
 
+    print len(g)
+    print(g[2])
+    for i in g:
         for ii in i:
             num+=1
 
