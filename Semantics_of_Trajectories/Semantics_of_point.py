@@ -17,8 +17,8 @@ def Compute_center_of_budling():
         #print tag_key
         building_area=ds.query('tag=="%s"'%(tag_key))
         #print((building_area['lat'][(building_area['index_all']).tolist()]))
-        temp_centre=[ sum(  np.array(building_area['lat'][(building_area['index_all']).tolist()]) )/len(building_area),
-                      sum(  np.array(building_area['long'][(building_area['index_all']).tolist()]) )/len(building_area)]#计算平均值 利用平均值来找中心点
+        temp_centre=[ sum (  np.array(building_area['lat'][(building_area['index_all']).tolist()]) )/len(building_area),
+                      sum (  np.array(building_area['long'][(building_area['index_all']).tolist()]) )/len(building_area)]#计算平均值 利用平均值来找中心点
         temp_centre.append(tag_key)
         center_of_budling.append(temp_centre)
 

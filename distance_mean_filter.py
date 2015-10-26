@@ -6,7 +6,7 @@ canculate the two location point's distance, and use mean filter to remove the o
 import math
 import copy
 global EARTH_RADIUS
-EARTH_RADIUS = 6371.004  #6378.137
+EARTH_RADIUS = 6371.004  #6378.137  6378137
 def rad(d):
     return d*math.pi/180.0
 
@@ -43,4 +43,7 @@ def DistanceFilter(La,Lon,winsize):
         LA.extend(TEMPLA)
         LONG.extend(TEMPLONG)
     return LA,LONG
+
+#if __name__=='__main__':
+#    print GetDistance(28.228225, 112.999492,28.228062, 112.999898)
 

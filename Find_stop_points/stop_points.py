@@ -25,20 +25,21 @@ def getfullfilepath():
         Fulldirlist.append(parent_path+"\\GPS_Get_PreProcesser"+"\\"+dir+"\\"+'locationGPS.txt')
     print(Fulldirlist)
     return Fulldirlist
-def get_filtered_gps(path):
+def get_filtered_gps_stop_point(path):
     gpsdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','Speed'] ,'formats': ['f18', 'f18', 'f18','f6']},
                        delimiter=',',
                        converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
                        skiprows=1,usecols=(0,1,3,4))
     #gpsdata=np.loadtxt(path, dtype=str,delimiter=',',skiprows=1,usecols=(0,1,3,4))
-    print(len(gpsdata))
-    gps_stop_point=detecte_stoppoint(gpsdata,0)
 
+    gps_stop_point=detecte_stoppoint(gpsdata,0)
+    global StopPoint
+    StopPoint=[]
     return gps_stop_point
     #调用 发现stoppoint函数，0 是指的开始位置的index
 
 def As_stoppoint(x1,y1,t1,x2,y2,t2):
-    avgdis=100
+    avgdis=80
     avgtime=4.0
     if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis:
         return True
@@ -71,7 +72,7 @@ def detecte_stoppoint(gpsdata,startindex):
         temp_distance.append( As_stoppoint(float(gpsdata[index][0]),float(gpsdata[index][1]),float(gpsdata[index][2]),
                     float(gpsdata[index+1][0]),float(gpsdata[index+1][1]),float(gpsdata[index+1][2])))
         index+=1
-    print (temp_distance)
+    #print (temp_distance)
 
 
     temp_start=0
@@ -80,8 +81,11 @@ def detecte_stoppoint(gpsdata,startindex):
         if temp_distance[i]==True:
             temp.append(gpsdata[i])
         else:
-            StopPoint.append(temp)
-            temp=[]
+            if len(temp)!=0:
+                StopPoint.append(temp)
+                temp=[]
+            else:
+                temp=[]
 
 
     return StopPoint
@@ -101,7 +105,7 @@ def detecte_stoppoint(gpsdata,startindex):
 
 if __name__=='__main__':
     full=getfullfilepath()
-    g=get_filtered_gps(full[2])
+    g=get_filtered_gps_stop_point(full[2])
     print('最后结果')
     #print(StopPoint)
     num=0
@@ -113,3 +117,8 @@ if __name__=='__main__':
             num+=1
 
     print num,'num'
+
+
+    for i in g:
+        print i
+

@@ -10,7 +10,22 @@ from Find_stop_points import stop_points
 def calculate_stop_point_tag():
     fullpath=stop_points.getfullfilepath()
     for temppath in fullpath:
-        stop_points.getfullfilepath()
+        #print(temppath)
+        Now_stop_point=stop_points.get_filtered_gps_stop_point(temppath)
+        if len(Now_stop_point)!=0:
+            for stopint in Now_stop_point:
+
+        #print(Now_stop_point)
+        #print('\n')
+
+def calculate_stop_pointstag(stopint):
+    sum_lat=0.0
+    sum_long=0.0
+    for item_item in  stopint:
+        sum_lat+=item_item[0]
+        sum_long+=item_item[1]
+    return sum_lat/len(stopint),sum_long/len(stopint)#计算每个stop point 列表的中心点
+
 
 
 if __name__=='__main__':
