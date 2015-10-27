@@ -1,0 +1,4 @@
+http://minigps.net/convert.html
+1.原始收集的是gps原始坐标，所以后面在画图的时候才是需要我们转换的
+2.因此在算距离的时候，因为我采取的google坐标，所以呢，要把目标区域转换成google坐标再来计算距离，
+利用google坐标计算distance。过滤 晚上完成转换

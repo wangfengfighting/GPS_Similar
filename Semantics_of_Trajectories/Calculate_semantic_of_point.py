@@ -39,7 +39,7 @@ def calculate_stop_pointstag(stopint):
     return [sum_lat/len(stopint),sum_long/len(stopint)]#计算每个stop point 列表的中心点
 def Match_semantics(sp,liminal=100):
     for center in center_of_budling:
-        print GetDistance(center[0],center[1],sp[0],sp[1]),center[2],sp
+        #print GetDistance(center[0],center[1],sp[0],sp[1]),center[2],sp
         if GetDistance(center[0],center[1],sp[0],sp[1])<=liminal:
             return center[2]
         else:
@@ -51,7 +51,7 @@ def Match_semantics(sp,liminal=100):
 ==========================通过密度聚类来进行计算===========================================================
 采用 dbscan 算法来做，然后在试试sicence的cluster
 '''
-def dbscan(filepath,EPS=0.00002,MIN_SAMPLE=9):
+def dbscan(filepath,EPS=0.0008,MIN_SAMPLE=8):
     XX=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     print(len(XX))
     #Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
@@ -65,6 +65,9 @@ def dbscan(filepath,EPS=0.00002,MIN_SAMPLE=9):
 
     # Number of clusters in labels, ignoring noise if present.
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+    print(n_clusters_)
+    print(db.core_sample_indices_)
+    print (XX[285] )
     unique_labels = set(labels)
     for k in unique_labels:
         if k != -1:
@@ -72,7 +75,9 @@ def dbscan(filepath,EPS=0.00002,MIN_SAMPLE=9):
             cluster = XX[class_member_mask & core_samples_mask]#cluster 就是每个密度聚类的结果
             #print(cluster)
             centor_point_of_cluster=[sum(cluster[:,0])/len(cluster[:,0]),sum(cluster[:,1])/len(cluster[:,1])]
-            print Match_semantics(centor_point_of_cluster,50)
+            for i in db.core_sample_indices_:
+                print Match_semantics(XX[i],200)
+            #print Match_semantics(centor_point_of_cluster,50)
 
     '''
 
@@ -98,5 +103,5 @@ def dbscan(filepath,EPS=0.00002,MIN_SAMPLE=9):
 if __name__=='__main__':
     #calculate_stop_point_tag()
     fullpath=stop_points.getfullfilepath()
-    print fullpath[7]
-    dbscan(fullpath[7])
+    print fullpath[8]
+    dbscan(fullpath[8])
