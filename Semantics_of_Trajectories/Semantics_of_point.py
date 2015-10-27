@@ -22,8 +22,8 @@ def Compute_center_of_budling():
         temp_centre.append(tag_key)
         center_of_budling.append(temp_centre)
 
-    return center_of_budling
+    return center_of_budling  #[[28.226690250000001, 113.00321249999999, 'phd_mess'].....]]
 
 
 if __name__=='__main__':
-    Compute_center_of_budling()
+    print Compute_center_of_budling()

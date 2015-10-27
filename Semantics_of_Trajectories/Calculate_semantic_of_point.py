@@ -7,6 +7,16 @@ __author__ = 'WangFeng'
 3.也可以先找到stop point 在根据这些来找标签
 '''
 from Find_stop_points import stop_points
+import Semantics_of_point
+from distance_mean_filter import GetDistance
+import numpy as np
+from sklearn.cluster import DBSCAN
+from matplotlib import pylab as plt
+from mpl_toolkits.mplot3d import Axes3D
+center_of_budling=Semantics_of_point.Compute_center_of_budling()
+'''
+==========================通过stop-point来进行计算===========================================================
+'''
 def calculate_stop_point_tag():
     fullpath=stop_points.getfullfilepath()
     for temppath in fullpath:
@@ -14,19 +24,79 @@ def calculate_stop_point_tag():
         Now_stop_point=stop_points.get_filtered_gps_stop_point(temppath)
         if len(Now_stop_point)!=0:
             for stopint in Now_stop_point:
+                sp=calculate_stop_pointstag(stopint)
+                print Match_semantics(sp,250)
 
         #print(Now_stop_point)
         #print('\n')
-
 def calculate_stop_pointstag(stopint):
     sum_lat=0.0
     sum_long=0.0
     for item_item in  stopint:
         sum_lat+=item_item[0]
         sum_long+=item_item[1]
-    return sum_lat/len(stopint),sum_long/len(stopint)#计算每个stop point 列表的中心点
+        #这里还没有进行时间的计算，也就是说没有计算停留时间的统计。后续可以考虑进来，时间=item_item[2]
+    return [sum_lat/len(stopint),sum_long/len(stopint)]#计算每个stop point 列表的中心点
+def Match_semantics(sp,liminal=100):
+    for center in center_of_budling:
+        print GetDistance(center[0],center[1],sp[0],sp[1]),center[2],sp
+        if GetDistance(center[0],center[1],sp[0],sp[1])<=liminal:
+            return center[2]
+        else:
+            if center==center_of_budling[len(center_of_budling)-1]:
+                return "Unknown"
+
+
+'''
+==========================通过密度聚类来进行计算===========================================================
+采用 dbscan 算法来做，然后在试试sicence的cluster
+'''
+def dbscan(filepath,EPS=0.00002,MIN_SAMPLE=9):
+    XX=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
+    print(len(XX))
+    #Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
+    centers = [[1, 1], [-1, -1], [1, -1]]
+    db = DBSCAN(eps=EPS, min_samples=MIN_SAMPLE).fit(XX)
+    #db = DBSCAN(eps=0.002, min_samples=10).fit(XX)  3
+    #db = DBSCAN(eps=0.0032, min_samples=10).fit(XX)   2
+    core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+    core_samples_mask[db.core_sample_indices_] = True
+    labels = db.labels_
+
+    # Number of clusters in labels, ignoring noise if present.
+    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+    unique_labels = set(labels)
+    for k in unique_labels:
+        if k != -1:
+            class_member_mask = (labels == k)
+            cluster = XX[class_member_mask & core_samples_mask]#cluster 就是每个密度聚类的结果
+            #print(cluster)
+            centor_point_of_cluster=[sum(cluster[:,0])/len(cluster[:,0]),sum(cluster[:,1])/len(cluster[:,1])]
+            print Match_semantics(centor_point_of_cluster,50)
+
+    '''
+
+        ax.scatter(xx[:, 0], xx[:, 1],np.array([1]*len(xx[:, 0])), 'o', markerfacecolor=col,
+             markeredgecolor='k', markersize=8)
+        #ax.scatter(xx[:, 0], xx[:, 1],np.array([1]*len(xx[:, 0])), c=col)
+        plt.title('Estimated number of clusters: %d' % n_clusters_)
+
+        xy = XX[class_member_mask & ~core_samples_mask]
+        plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+             markeredgecolor='k', markersize=4)
+        plt.show()
+        '''
+
+
+
+
+
+
 
 
 
 if __name__=='__main__':
-    calculate_stop_point_tag()
+    #calculate_stop_point_tag()
+    fullpath=stop_points.getfullfilepath()
+    print fullpath[7]
+    dbscan(fullpath[7])
