@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 
 
 def dbscan(EPS,MIN_SAMPLE):
-    XX=np.loadtxt(".\\GPS_Get_PreProcesser\\10-20-2015\\locationGPS.txt",dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
+    XX=np.loadtxt(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt",dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     #Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
     centers = [[1, 1], [-1, -1], [1, -1]]
     db = DBSCAN(eps=EPS, min_samples=MIN_SAMPLE).fit(XX)
