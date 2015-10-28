@@ -28,7 +28,7 @@ def calculate_stop_point_tag():
         if len(Now_stop_point)!=0:
             for stopint in Now_stop_point:
                 sp=calculate_stop_pointstag(stopint)
-                print Match_semantics(sp,250)
+               # print Match_semantics(sp,250)
 
         #print(Now_stop_point)
         #print('\n')
@@ -74,7 +74,7 @@ def Match_semantics(sp,liminal=100):
 def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
     semantic_label=[]
     XX=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
-    print(len(XX))
+    #print(len(XX))
     #Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
     centers = [[1, 1], [-1, -1], [1, -1]]
     db = DBSCAN(eps=EPS, min_samples=MIN_SAMPLE).fit(XX)
@@ -86,11 +86,11 @@ def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
 
     # Number of clusters in labels, ignoring noise if present.
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-    print(n_clusters_),'n_clusters_'
-    print(db.core_sample_indices_)
+    #print(n_clusters_),'n_clusters_'
+    #print(db.core_sample_indices_)
 
     unique_labels = set(labels)
-    print( len(db.core_sample_indices_)),'---------------'
+    #print( len(db.core_sample_indices_)),'---------------'
     for k in unique_labels:
         if k != -1:
             class_member_mask = (labels == k)
@@ -112,8 +112,8 @@ def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
 def science_cluster_semanstic(filepath):
     gps_semantic=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     labels,centers=multiple_cluster.science_cluster(gps_semantic,num=15,cutoff_distance=0.000087,experience=0.000045)
-    print(len(gps_semantic))
-    print(len(labels))
+    #print(len(gps_semantic))
+    #print(len(labels))
     return labels,centers
 
 def depart_same_seq(seq):
@@ -141,7 +141,7 @@ def depart_same_seq(seq):
     temp=[]
     final=[]
     #for i in range(0,len(a)-1):
-    print(len(seq))
+   # print(len(seq))
     while currtrn<len(seq):
 
         if seq[pre]==seq[currtrn] :
@@ -175,12 +175,85 @@ def depart_same_seq(seq):
         final.append(i[0])
     return final
 
+def  write_semantic_tofile(dic,label,path):
+    spath=path.replace("locationGPS","semanticGPS")
+    output=open(spath,'w+')
+    data=np.loadtxt(path,dtype=str,delimiter=',',skiprows=1,usecols=(0,1,2,3,4),unpack=False)
+    for la in range(0,len(label)):
+        if label[la]==-1:
+            output.write(data[la][0])
+            output.write(',')
+            output.write(data[la][1])
+            output.write(',')
+            output.write(data[la][2])
+            output.write(',')
+            output.write(data[la][3])
+            output.write(',')
+            output.write(data[la][4])
+            output.write(',')
+            output.write('exception')
+            output.write('\n')
+        else:
+            output.write(data[la][0])
+            output.write(',')
+            output.write(data[la][1])
+            output.write(',')
+            output.write(data[la][2])
+            output.write(',')
+            output.write(data[la][3])
+            output.write(',')
+            output.write(data[la][4])
+            output.write(',')
+            output.write(dic[label[la]])
+            output.write('\n')
+    output.close()
 
+def label_detect(path):
+    semantic_label=[]
+    adict={}
+    labels,centers=science_cluster_semanstic(path)
+    # print   sorted(labels)
+    # print len(centers)
+    # print('----------')
+    k=0
+    for i in centers:
+        if not math.isnan(i[0]):
+            temp_label=Match_semantics(i,150)
+            semantic_label.append([temp_label,i[0],i[1]])
+            adict[k]=temp_label
+        # elif i[0]== -1:
+        #     print '---------------------------------------'
+        #     semantic_label.append(["outlater",i[0],i[1]])
+        #     adict[99999]="outlater"
+        else:
+            semantic_label.append(["Unkonwn",i[0],i[1]])
+            adict[k]="Unkonwn"
+        k+=1
+    #print(adict)
+    #print adict[99999]
+    # for i in semantic_label:
+    #     print i[0],gps2googlegps([i[1:3]])
+    semantic_seq=depart_same_seq(labels)
+    # ss=[]
+    # for key in semantic_seq:
+    #     if key != -1:
+    #         ss.append(adict[key])
+    write_semantic_tofile(adict,labels,path)
 
 if __name__=='__main__':
     #calculate_stop_point_tag()
     fullpath=stop_points.getfullfilepath()
-    print fullpath[12]
+    #print fullpath[12]
+    # label_detect(fullpath[4])
+    for path in fullpath:
+        #print(path)
+        label_detect(path)
+
+        print 'have done'+path.split("\\")[4]
+    print('process over')
+
+
+    '''
     #se=dbscan(fullpath[12])
     semantic_label=[]
     adict={}
@@ -207,4 +280,6 @@ if __name__=='__main__':
     #print(adict)
     print(ss)
     print(depart_same_seq(ss))
-
+    print len(depart_same_seq(ss))
+    write_semantic_tofile(adict,labels,fullpath[12])
+    '''

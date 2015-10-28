@@ -23,7 +23,7 @@ def getfullfilepath():
     dirlist=getdir.printPath(parent_path+"\\GPS_Get_PreProcesser")
     for dir in dirlist:
         Fulldirlist.append(parent_path+"\\GPS_Get_PreProcesser"+"\\"+dir+"\\"+'locationGPS.txt')
-    print(Fulldirlist)
+    #print(Fulldirlist)
     return Fulldirlist
 def get_filtered_gps_stop_point(path):
     gpsdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','Speed'] ,'formats': ['f18', 'f18', 'f18','f6']},
