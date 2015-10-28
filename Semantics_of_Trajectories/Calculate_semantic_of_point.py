@@ -111,11 +111,69 @@ def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
 '''
 def science_cluster_semanstic(filepath):
     gps_semantic=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
-    labels,centers=multiple_cluster.science_cluster(gps_semantic)
+    labels,centers=multiple_cluster.science_cluster(gps_semantic,num=15,cutoff_distance=0.000087,experience=0.000045)
     print(len(gps_semantic))
     print(len(labels))
     return labels,centers
 
+def depart_same_seq(seq):
+    '''
+    currtrn=1
+    pre=0
+    ans=[]
+    temp=[]
+    final=[]
+    for i in range(0,len(seq)-1):
+        if seq[pre]==seq[currtrn]:
+            temp.append(seq[pre])
+            pre+=1
+            currtrn+=1
+        else:
+            temp.append(seq[pre])
+            ans.append(temp)
+            temp=[]
+            pre+=1
+            currtrn+=1
+    '''
+    currtrn=1
+    pre=0
+    ans=[]
+    temp=[]
+    final=[]
+    #for i in range(0,len(a)-1):
+    print(len(seq))
+    while currtrn<len(seq):
+
+        if seq[pre]==seq[currtrn] :
+            temp.append(seq[pre])
+            pre+=1
+            currtrn+=1
+
+            if currtrn==len(seq)-1:
+
+                if seq[pre-1]==seq[currtrn-1]:
+                    temp.append(seq[pre-1])
+                    ans.append(temp)
+                else:
+                    ans.append([seq[pre-1]])
+                    ans.append([seq[currtrn-1]])
+        else:
+            temp.append(seq[pre])
+            ans.append(temp)
+            temp=[]
+            pre+=1
+            currtrn+=1
+            if currtrn==len(seq)-1:
+                if seq[pre-1]==seq[currtrn-1]:
+                    temp.append(seq[pre-1])
+                    ans.append(temp)
+                else:
+                    ans.append([seq[pre-1]])
+                    ans.append([seq[currtrn-1]])
+
+    for i in ans:
+        final.append(i[0])
+    return final
 
 
 
@@ -125,14 +183,28 @@ if __name__=='__main__':
     print fullpath[12]
     #se=dbscan(fullpath[12])
     semantic_label=[]
+    adict={}
     labels,centers=science_cluster_semanstic(fullpath[12])
-    print (labels)
-    print(centers)
-    print('----------')
+    # print (labels)
+    # print(centers)
+    # print('----------')
+    k=0
     for i in centers:
         if not math.isnan(i[0]):
-            semantic_label.append([Match_semantics(i,150),i[0],i[1]])
+            temp_label=Match_semantics(i,150)
+            semantic_label.append([temp_label,i[0],i[1]])
+            adict[k]=temp_label
         else:
             semantic_label.append(["UUUUU",i[0],i[1]])
-    for i in semantic_label:
-        print i[0],gps2googlegps([i[1:3]])
+            adict[k]="Unknown"
+        k+=1
+    # for i in semantic_label:
+    #     print i[0],gps2googlegps([i[1:3]])
+    semantic_seq=depart_same_seq(labels)
+    ss=[]
+    for key in semantic_seq:
+        ss.append(adict[key])
+    #print(adict)
+    print(ss)
+    print(depart_same_seq(ss))
+
