@@ -66,7 +66,7 @@ def get_shortest_index(X,Y):
 def guiyihua(X,maxValue,minValue):
     return (X - minValue) / (maxValue - minValue)
 
-def science_cluster(X,num = 50,cutoff_distance = 0.00005,experience = 0.00031,show = True):
+def science_cluster(X,num = 50,cutoff_distance = 0.00005,experience = 0.00031,show = False):
     if not cutoff_distance > 0.0:
         raise ValueError("eps must be positive.")
     X = np.asarray(X)

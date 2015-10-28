@@ -14,6 +14,8 @@ from sklearn.cluster import DBSCAN
 from matplotlib import pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
 from Point_Transform import *
+from Find_stop_points import multiple_cluster
+from Find_stop_points import science_cluster as SC
 center_of_budling=Semantics_of_point.Compute_center_of_budling()
 '''
 ==========================通过stop-point来进行计算===========================================================
@@ -42,27 +44,35 @@ def Match_semantics(sp,liminal=100):
     temp_sp=[]
     temp_sp.append(sp)
     #print(temp_sp)
+    center_index=[]
     min_distance=9999999999.0
     min_label="Unknown"
     temp_center_googleGPS=gps2googlegps(temp_sp)
     for center in center_of_budling: #center_of_budling是 google 坐标
         dis=GetDistance(center[0],center[1],temp_center_googleGPS[0][0],temp_center_googleGPS[0][1])
+        # print GetDistance(center[0],center[1],temp_center_googleGPS[0][0],temp_center_googleGPS[0][1]),center[2],temp_center_googleGPS
+        # print GetDistance(center[0],center[1],sp[0],sp[1]),center[2],sp
+
         if dis<=liminal:
             #print GetDistance(center[0],center[1],temp_center_googleGPS[0][0],temp_center_googleGPS[0][1]),center[2],sp
             if dis<=min_distance:
                 min_distance=dis
                 min_label=center[2]
+                center_index.append(center[0])
+                center_index.append(center[1])
             #return center[2]
         # else:
         #     if center==center_of_budling[len(center_of_budling)-1]:
         #         return "Unknown"
+    ##print GetDistance(center_index[0],center_index[1],temp_center_googleGPS[0][0],temp_center_googleGPS[0][1]),min_label
     return min_label
 
 '''
 ==========================通过密度聚类来进行计算===========================================================
 采用 dbscan 算法来做，然后在试试sicence的cluster
 '''
-def dbscan(filepath,EPS=0.0002,MIN_SAMPLE=14):
+def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
+    semantic_label=[]
     XX=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     print(len(XX))
     #Latitude,Lat,XX=GPS_Kalman_Filter.Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-11-2015\\locationGPS.txt")
@@ -80,6 +90,7 @@ def dbscan(filepath,EPS=0.0002,MIN_SAMPLE=14):
     print(db.core_sample_indices_)
 
     unique_labels = set(labels)
+    print( len(db.core_sample_indices_)),'---------------'
     for k in unique_labels:
         if k != -1:
             class_member_mask = (labels == k)
@@ -87,13 +98,41 @@ def dbscan(filepath,EPS=0.0002,MIN_SAMPLE=14):
             #print(cluster)
             centor_point_of_cluster=[sum(cluster[:,0])/len(cluster[:,0]),sum(cluster[:,1])/len(cluster[:,1])]
 
-            # for i in db.core_sample_indices_:
-            #     print Match_semantics(XX[i],200)
+            for i in db.core_sample_indices_:
+                #print Match_semantics(XX[i],200)
+                semantic_label.append(Match_semantics(XX[i],150))
 
-            print Match_semantics(centor_point_of_cluster,9450)
+            #print Match_semantics(centor_point_of_cluster,350)
+    return semantic_label
+
+'''
+==========================通过science聚类来进行计算===========================================================
+采用sicence的cluster,聚类出你一天之中去过的点，然后根据中心点，把整个轨迹序列+半径里面的点添加进来，最后就形成了一个完整的咯。
+'''
+def science_cluster_semanstic(filepath):
+    gps_semantic=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
+    labels,centers=multiple_cluster.science_cluster(gps_semantic)
+    print(len(gps_semantic))
+    print(len(labels))
+    return labels,centers
+
+
+
 
 if __name__=='__main__':
     #calculate_stop_point_tag()
     fullpath=stop_points.getfullfilepath()
-    print fullpath[8]
-    dbscan(fullpath[8])
+    print fullpath[12]
+    #se=dbscan(fullpath[12])
+    semantic_label=[]
+    labels,centers=science_cluster_semanstic(fullpath[12])
+    print (labels)
+    print(centers)
+    print('----------')
+    for i in centers:
+        if not math.isnan(i[0]):
+            semantic_label.append([Match_semantics(i,150),i[0],i[1]])
+        else:
+            semantic_label.append(["UUUUU",i[0],i[1]])
+    for i in semantic_label:
+        print i[0],gps2googlegps([i[1:3]])
