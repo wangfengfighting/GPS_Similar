@@ -50,5 +50,9 @@ def kk(a):
         f.append((i[0]))
     return f
 if __name__=='__main__':
-    print(kk(c))
-    print(kk(b))
+    #print(kk(c))
+    #print(kk(b))
+    output=open('network.txt','w+')
+    a=[1,2,0.4]
+    output.writelines(a[0],a[1])
+    output.close()
