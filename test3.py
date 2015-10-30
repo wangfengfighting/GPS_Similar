@@ -52,7 +52,14 @@ def kk(a):
 if __name__=='__main__':
     #print(kk(c))
     #print(kk(b))
+    '''
     output=open('network.txt','w+')
     a=[1,2,0.4]
     output.writelines(a[0],a[1])
     output.close()
+    '''
+    m=[[(1, 2, 3, 4),(1, 2, 3, 4)]]
+    for i in m:
+        print(len(i))
+        for j in i:
+            print(j)

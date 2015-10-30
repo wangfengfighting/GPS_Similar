@@ -26,12 +26,13 @@ def getfullfilepath():
     #print(Fulldirlist)
     return Fulldirlist
 def get_filtered_gps_stop_point(path):
+    print(path),'-----------------------------------'
     gpsdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','Speed'] ,'formats': ['f18', 'f18', 'f18','f6']},
                        delimiter=',',
                        converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
                        skiprows=1,usecols=(0,1,3,4))
     #gpsdata=np.loadtxt(path, dtype=str,delimiter=',',skiprows=1,usecols=(0,1,3,4))
-
+    print(len(gpsdata)),'lenyuanshi'
     gps_stop_point=detecte_stoppoint(gpsdata,0)
     global StopPoint
     StopPoint=[]
@@ -39,9 +40,9 @@ def get_filtered_gps_stop_point(path):
     #调用 发现stoppoint函数，0 是指的开始位置的index
 
 def As_stoppoint(x1,y1,t1,x2,y2,t2):
-    avgdis=80
-    avgtime=4.0
-    if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis:
+    avgdis=50.0
+    avgtime=20.0
+    if distance_mean_filter.GetDistance(x1,y1,x2,y2)<=avgdis and t2-t1>avgtime:
         return True
     else:
         return False
@@ -99,26 +100,71 @@ def detecte_stoppoint(gpsdata,startindex):
 
 
     #print('最后都会执行的')
+def writeasn(file,data):
+    #print(file),'+++++++++++++++++++++++++'
+    #if not data:
+        #print('+++++++++++===========================')
+
+
+    file=file.replace("locationGPS","stoppoint")
+    stopfile=open(file,'w+')
+    for bigstoppoint in data:
+        length=len(bigstoppoint)
+        lat=0.0
+        long=0.0
+        intime=bigstoppoint[0][2]
+        outtime=bigstoppoint[length-1][2]
+        for smallstoppoint in bigstoppoint:
+            lat+=smallstoppoint[0]
+            long+=smallstoppoint[1]
+        avg_lat=lat/float(length)
+        avg_long=long/float(length)
+
+        #stopfile.writelines([avg_lat,avg_long,intime,outtime].__str__())
+        stopfile.write(avg_lat.__str__())
+        stopfile.write(',')
+        stopfile.write(avg_long.__str__())
+        stopfile.write(',')
+        stopfile.write(intime.__str__())
+        stopfile.write(',')
+        stopfile.write(outtime.__str__())
+
+        stopfile.write('\n')
+    stopfile.close()
+
+
+
 
 
 
 
 if __name__=='__main__':
     full=getfullfilepath()
-    g=get_filtered_gps_stop_point(full[2])
-    print('最后结果')
-    #print(StopPoint)
-    num=0
 
-    print len(g)
-    print(g[2])
-    for i in g:
-        for ii in i:
-            num+=1
-
-    print num,'num'
+    for path in full:
+        point=get_filtered_gps_stop_point(path)
+        writeasn(path,point)
+    print('运行结束')
 
 
-    for i in g:
-        print i
+    #
+    # print(full[2]),'--------------------'
+    # g=get_filtered_gps_stop_point(full[2])
+    # print((g))
+    # print('最后结果')
+    # print(StopPoint)
+    # num=0
+    #
+    # print(g[2])
+    # for i in g:
+    #     for ii in i:
+    #         num+=1
+    #
+    # print num,'num'
+    # writeasn(full[2],g)
+
+
+
+    # for i in g:
+    #     print i
 
