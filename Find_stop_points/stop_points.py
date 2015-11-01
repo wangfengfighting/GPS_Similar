@@ -26,16 +26,18 @@ def getfullfilepath():
     #print(Fulldirlist)
     return Fulldirlist
 def get_filtered_gps_stop_point(path):
-    print(path),'-----------------------------------'
+    #print(path),'-----------------------------------'
     gpsdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','Speed'] ,'formats': ['f18', 'f18', 'f18','f6']},
                        delimiter=',',
                        converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
                        skiprows=1,usecols=(0,1,3,4))
     #gpsdata=np.loadtxt(path, dtype=str,delimiter=',',skiprows=1,usecols=(0,1,3,4))
-    print(len(gpsdata)),'lenyuanshi'
+    print(len(gpsdata)),'premier number of point'
     gps_stop_point=detecte_stoppoint(gpsdata,0)
     global StopPoint
     StopPoint=[]
+    print(len(gps_stop_point)),'stoppoint number of point'
+    #print('---------------------------我是分割线----------------------------------')
     return gps_stop_point
     #调用 发现stoppoint函数，0 是指的开始位置的index
 

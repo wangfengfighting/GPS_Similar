@@ -22,14 +22,16 @@ center_of_budling=Semantics_of_point.Compute_center_of_budling()
 '''
 def calculate_stop_point_tag():
     fullpath=stop_points.getfullfilepath()
+    LABEL=[]
     for temppath in fullpath:
-        #print(temppath)
+        print(temppath)
+
         Now_stop_point=stop_points.get_filtered_gps_stop_point(temppath)
         if len(Now_stop_point)!=0:
             for stopint in Now_stop_point:
                 sp=calculate_stop_pointstag(stopint)
-               # print Match_semantics(sp,250)
-
+                LABEL.append( Match_semantics(sp,80))
+        write_semantic_of_stoppoint(temppath,depart_same_seq(LABEL))
         #print(Now_stop_point)
         #print('\n')
 def calculate_stop_pointstag(stopint):
@@ -116,7 +118,7 @@ def science_cluster_semanstic(filepath):
     #print(len(labels))
     return labels,centers
 
-def depart_same_seq(seq):
+def depart_same_seq(seq):   #这个是除去列表中连续的重复的点，相当于是合并相同的
     '''
     currtrn=1
     pre=0
@@ -174,6 +176,16 @@ def depart_same_seq(seq):
     for i in ans:
         final.append(i[0])
     return final
+
+
+def write_semantic_of_stoppoint(path,se):
+    spath=path.replace("locationGPS","semanticGPS_stoppoint")
+    output=open(spath,'w+')
+    for label in se:
+        output.write(label)
+        output.write('\n')
+    output.close()
+
 
 def  write_semantic_tofile(dic,label,path):
     spath=path.replace("locationGPS","semanticGPS")
@@ -241,16 +253,13 @@ def label_detect(path):
     write_semantic_tofile(adict,labels,path)
 
 if __name__=='__main__':
-    #calculate_stop_point_tag()
-    fullpath=stop_points.getfullfilepath()
-    #print fullpath[12]
-    # label_detect(fullpath[4])
-    for path in fullpath:
-        #print(path)
-        label_detect(path)
-
-        print 'have done'+path.split("\\")[4]
-    print('process over')
+    calculate_stop_point_tag()
+    #fullpath=stop_points.getfullfilepath()
+    #
+    # for path in fullpath:
+    #     label_detect(path)
+    #     print 'have done'+path.split("\\")[4]
+    # print('process over')
 
 
     '''

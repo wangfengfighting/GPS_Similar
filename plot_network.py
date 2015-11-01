@@ -5,7 +5,7 @@ import math
 import numpy as np
 import networkx as nx
 from decimal import *
-data = np.loadtxt('network.txt',dtype=str,delimiter=',',usecols=(0,1,2))
+data = np.loadtxt('network_stoppoint.txt',dtype=str,delimiter=',',usecols=(0,1,2))
 
 print (data)
 G = nx.Graph()
@@ -23,7 +23,7 @@ for (u,v,d) in G.edges(data=True):
     #print G.get_edge_data(u,v).values()
     edgewidth.append(round(G.get_edge_data(u,v).values()[0]*160,2))
 
-nx.draw_networkx_edges(G,pos,width=edgewidth,with_labels=True)
+nx.draw_networkx_edges(G,pos,width=edgewidth,with_labels=True,edge_color='r')
 #nx.draw_networkx_nodes(G,pos,with_labels=True)
 nx.draw(G,pos,with_labels=True)
 plt.show()
