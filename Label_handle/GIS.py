@@ -6,8 +6,8 @@ import math
 class MaxEnt(object):
     def __init__(self):
         self.feats = defaultdict(int)
-        self.trainset = []
-        self.labels = set()
+        self.trainset = []  #trainset 的标准是这样的[['THbuliding', '28.23101501', '112.99733601', '99.0', '9-18-2015', '07:12:12', '1.456743'].........[]]
+        self.labels = set() #
 
     def load_data(self,file):
         for line in open(file):
@@ -21,6 +21,8 @@ class MaxEnt(object):
                 # (label,f) tuple is feature
                 self.feats[(label,f)] += 1
             self.trainset.append(fields)
+        print self.trainset
+        print self.feats
 
     def _initparams(self):
         self.size = len(self.trainset)
@@ -71,7 +73,7 @@ class MaxEnt(object):
     def train(self, max_iter =1000):
         self._initparams()
         for i in range(max_iter):
-            print 'iter %d ...'%(i+1)
+            #print 'iter %d ...'%(i+1)
             # calculate feature expectation on model distribution
             self.ep = self.Ep()
             self.lastw = self.w[:]
@@ -79,7 +81,7 @@ class MaxEnt(object):
                 delta = 1.0/self.M * math.log(self.ep_[i]/self.ep[i])
                 # update w
                 self.w[i] += delta
-            print self.w
+            #print self.w
             # test if the algorithm is convergence
             if self._convergence(self.lastw,self.w):
                 break
