@@ -17,6 +17,8 @@ from Point_Transform import *
 from Find_stop_points import multiple_cluster
 from Find_stop_points import science_cluster as SC
 center_of_budling=Semantics_of_point.Compute_center_of_budling()
+road_gps=np.loadtxt('road_point',dtype=float,delimiter=',',usecols=(0,1),unpack=False)
+
 '''
 ==========================通过stop-point来进行计算===========================================================
 '''
@@ -30,7 +32,7 @@ def calculate_stop_point_tag():
         if len(Now_stop_point)!=0:
             for stopint in Now_stop_point:
                 sp=calculate_stop_pointstag(stopint)
-                LABEL.append( Match_semantics(sp,80))
+                LABEL.append( Match_semantics(sp,90))
         write_semantic_of_stoppoint(temppath,depart_same_seq(LABEL))
         #print(Now_stop_point)
         #print('\n')
@@ -50,6 +52,7 @@ def Match_semantics(sp,liminal=100):
     min_distance=9999999999.0
     min_label="Unknown"
     temp_center_googleGPS=gps2googlegps(temp_sp)
+    translate_road_point=gps2googlegps(road_gps) #[[28.22980434947592, 113.00367366773305], [28.225867173722641, 113.00181810798254].......]
     for center in center_of_budling: #center_of_budling是 google 坐标
         dis=GetDistance(center[0],center[1],temp_center_googleGPS[0][0],temp_center_googleGPS[0][1])
         # print GetDistance(center[0],center[1],temp_center_googleGPS[0][0],temp_center_googleGPS[0][1]),center[2],temp_center_googleGPS
@@ -62,6 +65,12 @@ def Match_semantics(sp,liminal=100):
                 min_label=center[2]
                 center_index.append(center[0])
                 center_index.append(center[1])
+        else:
+            for road_item in translate_road_point:
+                disroad=GetDistance(center[0],center[1],road_item[0],road_item[1])
+                if disroad<=100:
+                    min_label="road"
+                    break
             #return center[2]
         # else:
         #     if center==center_of_budling[len(center_of_budling)-1]:
@@ -102,7 +111,7 @@ def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
 
             for i in db.core_sample_indices_:
                 #print Match_semantics(XX[i],200)
-                semantic_label.append(Match_semantics(XX[i],150))
+                semantic_label.append(Match_semantics(XX[i],100))
 
             #print Match_semantics(centor_point_of_cluster,350)
     return semantic_label
@@ -177,7 +186,9 @@ def depart_same_seq(seq):   #这个是除去列表中连续的重复的点，相
         final.append(i[0])
     return final
 
-
+'''
+这个方法写的是stop-point 聚类的结果 label
+'''
 def write_semantic_of_stoppoint(path,se):
     spath=path.replace("locationGPS","semanticGPS_stoppoint")
     output=open(spath,'w+')
@@ -186,7 +197,9 @@ def write_semantic_of_stoppoint(path,se):
         output.write('\n')
     output.close()
 
-
+'''
+这个方法写的是science聚类的结果 label
+'''
 def  write_semantic_tofile(dic,label,path):
     spath=path.replace("locationGPS","semanticGPS")
     output=open(spath,'w+')
@@ -230,7 +243,7 @@ def label_detect(path):
     k=0
     for i in centers:
         if not math.isnan(i[0]):
-            temp_label=Match_semantics(i,150)
+            temp_label=Match_semantics(i,150)  #150是聚类中心的半径这样算的里面所有的点都是这个聚类label
             semantic_label.append([temp_label,i[0],i[1]])
             adict[k]=temp_label
         # elif i[0]== -1:
@@ -256,12 +269,12 @@ if __name__=='__main__':
     calculate_stop_point_tag()
 
     #下面用的是密度 science聚类的办法
-    fullpath=stop_points.getfullfilepath()
-
-    for path in fullpath:
-        label_detect(path)
-        print 'have done'+path.split("\\")[4]
-    print('process over')
+    # fullpath=stop_points.getfullfilepath()
+    #
+    # for path in fullpath:
+    #     label_detect(path)
+    #     print 'have done'+path.split("\\")[4]
+    # print('process over')
 
 
     '''

@@ -5,6 +5,7 @@ __author__ = 'WangFeng'
 传送的是列表，返回的是列表
 '''
 import math
+import numpy as np
 a = 6378245.0
 ee = 0.00669342162296594323
 pi = 3.14159265358979324
@@ -63,3 +64,5 @@ if __name__=='__main__':
     x=[]
     x.append(b)
     print(gps2googlegps(x))
+    # road_gps=np.loadtxt('road_point',dtype=float,delimiter=',',usecols=(0,1),unpack=False)
+    # print(gps2googlegps(road_gps))

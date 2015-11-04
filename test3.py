@@ -58,8 +58,14 @@ if __name__=='__main__':
     output.writelines(a[0],a[1])
     output.close()
     '''
-    m=[[(1, 2, 3, 4),(1, 2, 3, 4)]]
-    for i in m:
-        print(len(i))
-        for j in i:
-            print(j)
+    # m=[[(1, 2, 3, 4),(1, 2, 3, 4)]]
+    # for i in m:
+    #     print(len(i))
+    #     for j in i:
+    #         print(j)
+    for i in range(9):
+        a=[1,2,3,4,5,6,7,8,9,11,12]
+        for k in a:
+            if k>=5:
+                print(k)
+                break
