@@ -254,12 +254,14 @@ def label_detect(path):
 
 if __name__=='__main__':
     calculate_stop_point_tag()
-    #fullpath=stop_points.getfullfilepath()
-    #
-    # for path in fullpath:
-    #     label_detect(path)
-    #     print 'have done'+path.split("\\")[4]
-    # print('process over')
+
+    #下面用的是密度 science聚类的办法
+    fullpath=stop_points.getfullfilepath()
+
+    for path in fullpath:
+        label_detect(path)
+        print 'have done'+path.split("\\")[4]
+    print('process over')
 
 
     '''
