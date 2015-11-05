@@ -9,4 +9,9 @@ import numpy as np
 import mlpy
 user1=['road','103','pdl','road','pdl','road','pdl','road','baskball_5','road']
 user2=['103''road','101','pdl','road','102','gym_101','103','road','pdl','road','pdl','road','102','east_door3']
-length, path = mlpy.lcs_std(user1,user2)
+a=[1,2,3,2,4,1,2]
+b=[2,4,3,1,2,1]
+
+length, path = mlpy.lcs_std(a,b)
+print(length)
+print(path)
