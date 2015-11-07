@@ -9,18 +9,30 @@ import numpy as np
 import mlpy
 import pickle
 from Init_Label_Dic import *
-
+from Calculate_semantic_of_point import depart_same_seq
 dic=open('labelDic.pkl','rb')    #打开文件
 labeldict= pickle.load(dic)
 def caculLCS():
     labelPath=GetLabelFile()
-    for index in range(0,len(labelPath)-2):
-        seq1=label2number(labelPath[index])
-        seq2=label2number(labelPath[index+1])
-        print(seq1)
-        print seq2
-        length, path = mlpy.lcs_std(seq1,seq2)
-        print '---------------------------'+str(length)+'-----------------------'
+    for i in range(0,len(labelPath)-1):
+        for j in range(i+1,len(labelPath)):
+            seqi=label2number(labelPath[i])
+            namei=labelPath[i].split('\\')[4]
+            seqj=label2number(labelPath[j])
+            namej=labelPath[j].split('\\')[4]
+            length, path = mlpy.lcs_std(seqi,seqj)
+            # print  path
+            # print    namei+'---'+namej+'-----------'+str(length)+'------------'
+            Write_LCS_Ans([namei,namej,length])
+
+    # for index in range(0,len(labelPath)-2):
+    #     print labelPath[index].split('\\')[4]   #文件夹的name
+    #     seq1=label2number(labelPath[index])
+    #     seq2=label2number(labelPath[index+1])
+    #     # print(seq1)
+    #     # print seq2
+    #     length, path = mlpy.lcs_std(seq1,seq2)
+    #     print '---------------------------'+str(length)+'-----------------------'
 
 
         #length, path = mlpy.lcs_std(seq1,seq2)
@@ -28,15 +40,29 @@ def caculLCS():
 
 
 def label2number(TempPath):
-    TempPath=TempPath.replace('semanticGPS_stoppoint.txt','semanticGPS.txt')
+    tempPath=TempPath.replace('semanticGPS_stoppoint.txt','semanticGPS.txt')
+    #print tempPath
     templabel=[]
-    labeldf=np.loadtxt(TempPath,dtype=str,usecols=(5,))
-    for item in labeldf:
+    labeldf=np.loadtxt(tempPath,dtype=str,delimiter=',',usecols=(5,))
+    labeldf_removeRE=depart_same_seq(labeldf)
+    for item in labeldf_removeRE:
         if item in labeldict:
             templabel.append(labeldict[item])
-        else: #label 没有在现有的里面找到
-            templabel.append(88888)
+            #else: #label 没有在现有的里面找到
+            #templabel.append(88888)
     return templabel
+
+def  Write_LCS_Ans(lcsLength):
+    lcsFile=open('LCS_Length.txt','a')
+    lcsFile.write(lcsLength[0])
+    lcsFile.write(',')
+    lcsFile.write(lcsLength[1])
+    lcsFile.write(',')
+    lcsFile.write(str(lcsLength[2]))
+    lcsFile.write('\n')
+    lcsFile.close()
+
+
 
 def number2label(numSeq):
     labelSeq=[]
