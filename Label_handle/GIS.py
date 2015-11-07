@@ -1,5 +1,8 @@
 # coding: utf-8
 __author__ = 'WangFeng'
+'''
+GIS是最大熵模型。用来计算最大熵的，用来预测那些Unknown的label的准取消的算法
+'''
 from collections import defaultdict
 import math
 
