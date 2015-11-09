@@ -17,8 +17,8 @@ class ldaHelper:
                        converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
                        usecols=(3,5))
         #print tempdata
-        for i in tempdata:
-            print float(i[0])
+        # for i in tempdata:
+        #     print float(i[0])
 
         return self.calculateTimestamp(tempdata)
 
@@ -58,12 +58,14 @@ class ldaHelper:
              t.append(endTime)
              t.append(statelabel)
              theLast.append(t)
-             print(t)
+
              t=[]
 
-         return finaltimestamp
-         #return theLast
+         #return finaltimestamp
+         return theLast
 
 if __name__=='__main__':
     a=ldaHelper()
     ans=a.Add_timestamp('E:\\Research_Study\\GPS_Similar\\GPS_Get_PreProcesser\\9-29-2015\\semanticGPS.txt')
+    for i in ans:
+        print str(i[1]-i[0]),i[2]
