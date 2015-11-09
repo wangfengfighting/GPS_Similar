@@ -18,14 +18,14 @@ def GetSemanticGPSpath():
     return Fulldirlist
 
 def Add_timestamp(path):
-    tempdata=np.loadtxt(path, dtype={'names': ['Latitude', 'Longitude', 'time','label'] ,'formats': ['f18', 'f18', 'f18','S16']},
+    tempdata=np.loadtxt(path, dtype={'names': [ 'time','label'] ,'formats': [ 'f18','S16']},
                        delimiter=',',
                        converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
-                       usecols=(0,1,3,5))
+                       usecols=(3,5))
     print tempdata
     
 
 if __name__=='__main__':
     for i in GetSemanticGPSpath():
-        Add_timestamp(i)
+        print(i)
         break
