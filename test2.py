@@ -23,9 +23,9 @@ def solve(eq,var='x'):
 if __name__=='__main__':
     a='9-29-2015 07:14:56'
     b='9-29-2015 07:14:30'
-
-    timeStamp = float(time.mktime(a))
-    print(timeStamp)
+    t1 = datetime.datetime.strptime('9-29-2015 07:14:56', '%m-%d-%Y %H:%M:%S')
+    t2 = datetime.datetime.strptime('9-29-2015 07:14:30', '%m-%d-%Y %H:%M:%S')
+    print (t1-t2).seconds
 
    # a=[1,1,1,2,2,3,4,4,5,5,3,3,5,5,6,6,7,7,9]
    # a.reverse()

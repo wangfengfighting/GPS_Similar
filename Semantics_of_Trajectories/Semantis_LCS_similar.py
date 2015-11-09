@@ -21,8 +21,6 @@ def caculLCS():
             seqj=label2number(labelPath[j])
             namej=labelPath[j].split('\\')[4]
             length, path = mlpy.lcs_std(seqi,seqj)
-            # print  path
-            # print    namei+'---'+namej+'-----------'+str(length)+'------------'
             Write_LCS_Ans([namei,namej,length])
 
     # for index in range(0,len(labelPath)-2):
