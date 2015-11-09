@@ -243,7 +243,7 @@ def label_detect(path):
     k=0
     for i in centers:
         if not math.isnan(i[0]):
-            temp_label=Match_semantics(i,150)  #150是聚类中心的半径这样算的里面所有的点都是这个聚类label
+            temp_label=Match_semantics(i,100)  #150是聚类中心的半径这样算的里面所有的点都是这个聚类label
             semantic_label.append([temp_label,i[0],i[1]])
             adict[k]=temp_label
         # elif i[0]== -1:

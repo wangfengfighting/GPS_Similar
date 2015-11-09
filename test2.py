@@ -19,20 +19,20 @@ def solve(eq,var='x'):
 
 
 if __name__=='__main__':
-    '''
-    x1=[[28.228225, 1],[28.228168,1]]
-    y1=[112.999492,112.999898]
-    x2=[[28.228047,1],[28.228062,1]]
-    y2=[112.999500,112.999898]
-    z1=solveline(x1,y1)
-    z2=solveline(x2,y2)
-    x_ans=solve("%s*x+%s=%s*x+%s"%(z1[0],z1[1],z2[0],z2[1]))
-    print x_ans
-    print  z1[0]*x_ans+z1[1]
-    print  z2[0]*x_ans+z2[1]
-
-    print (sum(np.array(x1))+sum(np.array(x2)))/4,(sum(np.array(y1))+sum(np.array(y2)))/4
-    '''
-    z=[1,2]
-    z.append("gggg")
-    print z
+   a=[1,1,1,2,2,3,3,5,4,4,6,6,7,7,7,8,8,8,8,8]
+   a.reverse()
+   temp=[]
+   for i in range(len(a)):
+       t1=a.pop()
+       if not len(temp)==0:
+           if t1==temp[len(temp)-1]:
+               temp.append(t1)
+           else:
+               print temp.__str__()
+               temp=[]
+               temp.append(t1)
+       # elif i==len(a)-1:
+       #     temp.append(t1)
+       #     print temp.__str__()
+       else:
+           temp.append(t1)
