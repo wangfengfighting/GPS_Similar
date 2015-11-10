@@ -109,10 +109,10 @@ if __name__=='__main__':
     # print model.predict('Happy')
 
     model2 = MaxEnt()
-    model2.load_data('label_test')
+    model2.load_data('label_test1')
     model2.train()
     print '----------------------- 我是分割线---------------------------------'
-    print (model2.predict('28.22925393 112.99899129 70.0 9-18-2015 07:16:56 0.37483332'))
-    print sorted(model2.predict('28.22925393 112.99899129 70.0 9-18-2015 07:16:56 0.37483332'))
+    #print (model2.predict('pdl road pdl 103'))
+    print sorted(model2.predict('road road'))
 
     #print model2.predict('bc 0716')
