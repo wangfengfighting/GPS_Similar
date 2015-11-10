@@ -32,7 +32,7 @@ def calculate_stop_point_tag():
         if len(Now_stop_point)!=0:
             for stopint in Now_stop_point:
                 sp=calculate_stop_pointstag(stopint)
-                LABEL.append( Match_semantics(sp,90))
+                LABEL.append( Match_semantics(sp,80))
         write_semantic_of_stoppoint(temppath,depart_same_seq(LABEL))
         #print(Now_stop_point)
         #print('\n')
@@ -202,7 +202,9 @@ def write_semantic_of_stoppoint(path,se):
 '''
 def  write_semantic_tofile(dic,label,path):
     spath=path.replace("locationGPS","semanticGPS")
+    labelpath=path.replace("locationGPS","semantic_science_label")
     output=open(spath,'w+')
+    outputlabel=open(labelpath,'w+')
     data=np.loadtxt(path,dtype=str,delimiter=',',skiprows=1,usecols=(0,1,2,3,4),unpack=False)
     for la in range(0,len(label)):
         if label[la]==-1:
@@ -218,6 +220,8 @@ def  write_semantic_tofile(dic,label,path):
             output.write(',')
             output.write('exception')
             output.write('\n')
+            outputlabel.write('exception')
+            outputlabel.write('\n')
         else:
             output.write(data[la][0])
             output.write(',')
@@ -231,7 +235,10 @@ def  write_semantic_tofile(dic,label,path):
             output.write(',')
             output.write(dic[label[la]])
             output.write('\n')
+            outputlabel.write(dic[label[la]])
+            outputlabel.write('\n')
     output.close()
+    outputlabel.close()
 
 def label_detect(path):
     semantic_label=[]
@@ -243,7 +250,7 @@ def label_detect(path):
     k=0
     for i in centers:
         if not math.isnan(i[0]):
-            temp_label=Match_semantics(i,100)  #150是聚类中心的半径这样算的里面所有的点都是这个聚类label
+            temp_label=Match_semantics(i,70)  #150是聚类中心的半径这样算的里面所有的点都是这个聚类label
             semantic_label.append([temp_label,i[0],i[1]])
             adict[k]=temp_label
         # elif i[0]== -1:

@@ -8,6 +8,7 @@ import os
 import numpy as np
 import time
 import datetime
+from LDA_process_class import ldaHelper
 def GetSemanticGPSpath():
     getdir=GetDirName()
     Fulldirlist=[]
@@ -23,9 +24,32 @@ def Add_timestamp(path):
                        converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
                        usecols=(3,5))
     print tempdata
+
+def write_labelTime2file(seq,filename):
+    filename=filename.replace('semanticGPS','labelTime')
+    output=open(filename,'w')
+    for i in range(0,len(seq)):
+        if seq[i][3]!=0:
+            output.write(seq[i][0])#label
+            output.write(',')
+            output.write(seq[i][1])#begintime
+            output.write(',')
+            output.write(seq[i][2])#endtime
+            output.write(',')
+            output.write(str(seq[i][3]))#time
+            output.write('\n')
+    output.close()
+
+
+
+def Label_Time_process():
+    filelist=GetSemanticGPSpath()
+    lda=ldaHelper()
+    for file in filelist:
+        write_labelTime2file(lda.Add_timestamp(file),file)
+        print('have done %s'%file)
     
 
 if __name__=='__main__':
-    for i in GetSemanticGPSpath():
-        print(i)
-        break
+    Label_Time_process()
+

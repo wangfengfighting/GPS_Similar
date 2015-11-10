@@ -58,12 +58,14 @@ class ldaHelper:
              #theLast.append([beginTime,endTime,statelabel])
              # t.append(beginTime)
              # t.append(endTime)
-             t.append(str2Time(beginTime,endTime))
              t.append(statelabel)
+             t.append(beginTime)
+             t.append(endTime)
+             t.append(str2Time(beginTime,endTime))
              theLast.append(t)
              t=[]
          #return finaltimestamp
-         return theLast
+         return theLast    #[['road', '7-10-2015 07:08:12', '7-10-2015 07:33:33', 1521]......]
 
 def str2Time(timeStr1,timeStr2):
     t1 = datetime.datetime.strptime(timeStr1,'%m-%d-%Y %H:%M:%S')
@@ -73,6 +75,5 @@ def str2Time(timeStr1,timeStr2):
 
 if __name__=='__main__':
     a=ldaHelper()
-    ans=a.Add_timestamp('G:\\PostgraduatePROJECT\\GPS_Similar\\GPS_Get_PreProcesser\\7-10-2015\\semanticGPS.txt')
-    for i in ans:
-        print i
+    ans=a.Add_timestamp('E:\\Research_Study\\GPS_Similar\\GPS_Get_PreProcesser\\7-10-2015\\semanticGPS.txt')
+    print(ans)

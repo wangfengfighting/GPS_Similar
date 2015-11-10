@@ -59,4 +59,3 @@ if __name__=='__main__':
     for wenjianjia in dirlist:
         print ".\\GPS_Get_PreProcesser"+  '\\'  +  wenjianjia  +  '\\'  +   'location.txt',wenjianjia
         readfile(".\\GPS_Get_PreProcesser"+  '\\'  +  wenjianjia  +  '\\'  +   'location.txt',wenjianjia)
-    #readfile(".\\GPS_Get_PreProcesser\\7-16-2015\\location.txt")

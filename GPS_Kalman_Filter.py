@@ -1,9 +1,10 @@
-__author__ = 'Administrator'
+__author__ = 'WangFeng'
 # coding: utf-8
 '''
 This use Kalman Filter to remove the gps noise points
 '''
 from pykalman import KalmanFilter
+import scipy.signal as signal
 import numpy as np
 import math
 from matplotlib import pylab as plt
@@ -13,58 +14,98 @@ import copy
 import simple_kalman
 import  simple_mid_filter
 import simple_mean_filter
-import distance_mean_filter
+from Find_stop_points import  multiple_cluster
 from Find_stop_points.multiple_cluster import *
 def Get_Prime_GpsData(filepath_name):
     Latitude,Longitude=np.loadtxt(filepath_name,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=True)
-    #Longitude=[]
-    #Latitude=[]
-    #lala=map(lambda x: x * 100000, Latitude)
-    #lolo=map(lambda x: x * 100000, Longitude)
     data=np.loadtxt(filepath_name,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     drewgps(Latitude,Longitude)
-
-    #l,c=(science_cluster(data))
-    #print(l)
-    #print(c)
-    #la=DJ_Cluster(data,0.00000002,5)
-    #print(la)
-    #drewgps(c[:][0],c[:][1])
-    #drewgps(simple_mean_filter.mean_filter(Latitude,4),simple_mean_filter.mean_filter(Longitude,4))
-
-
-    #drewgps(simple_kalman.Kalman(Latitude),simple_kalman.Kalman(Longitude))
-
-
-    #drewgps((Latitude),simple_kalman.Kalman(Longitude))
-    #drewgps(simple_mid_filter.filter(Latitude,2),simple_mid_filter.filter(Longitude,3))
-    #g=distance_mean_filter.DistanceFilter(Latitude,Longitude,5)
-    #drewgps(g[0],g[1])
-    #print len(Latitude) ,len(g[0])
-    #drewgps(simple_mid_filter.filter(Latitude,5),simple_mid_filter.filter(Longitude,5))
-    '''
-    # chang str to float
-    for i in range(0,len(La)):
-        print( La[i])
-        #lengthLa=len(La[i].split('.')[1])
-        #lengthLo=len(Lo[i].split('.')[1])
-
-        Latitude.append(   (decimal.Decimal(La[i]))    )
-        Longitude.append( (decimal.Decimal(Lo[i]))    )
-    print('-------------')
-    #print( Latitude)
-    '''
-    '''
-    gpsData=np.loadtxt(filepath_name,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
-    #Lat=KalmanFilterGPS(Latitude)
-    #Long=KalmanFilterGPS(Longitude)
-    '''
-    #Lat=MediaFilter(Latitude,4)
-    #Long=MediaFilter(Longitude,4)
+    gpsdata=RS_Kalman(Latitude,Longitude,3,3)
+    labels,centers=multiple_cluster.science_cluster(gpsdata,num=5,cutoff_distance=0.000087,experience=0.000045)
+    print len(centers)
+    labels1,centers1=multiple_cluster.science_cluster(data,num=10,cutoff_distance=0.000087,experience=0.000045)
+    print len(centers1)
+    #gpsdata=RS_Kalman(data,3,3)
+    print gpsdata
     Lat=KalmanFilterGPS(Latitude)
     Long=KalmanFilterGPS(Longitude)
     #drewgps(Latitude,Long)
-    return Longitude,simple_mean_filter.mean_filter(Longitude,4)
+    t=[gpsdata[i][1] for i in range(len(gpsdata))]
+    return Longitude,t
+
+def Kalman(Z):
+    n_iter = len(Z)
+    sz = (n_iter,)
+    Q = 1e-5
+    xhat=np.zeros(sz)      # a posteri estimate of x
+    P=np.zeros(sz)         # a posteri error estimate
+    xhatminus=np.zeros(sz) # a priori estimate of x
+    Pminus=np.zeros(sz)    # a priori error estimate
+    K=np.zeros(sz)         # gain or blending factor
+#    R = 0.1**2
+#    R = numpy.std(numpy.array(Z)) * 1
+    R = 1
+#    print R
+
+    xhat[0] = Z[0]
+    P[0] = 0.5
+
+    for k in range(1,n_iter):
+        # time update
+        xhatminus[k] = xhat[k-1]
+        Pminus[k] = P[k-1]+Q
+
+        # measurement update
+        K[k] = Pminus[k]/( Pminus[k]+R )
+        xhat[k] = xhatminus[k]+K[k]*(Z[k]-xhatminus[k])
+        P[k] = (1-K[k])*Pminus[k]
+    return xhat
+
+def RS_Kalman(lat,lng,l_size=5 ,g_size=5):
+    Lat=signal.medfilt(lat,l_size)
+    Lng=signal.medfilt(lng,g_size)
+    drewgps(Lat,Lng)
+    Lat=KalmanByGroup(Lat)
+    Lng=KalmanByGroup(Lng)
+    drewgps(Lat,Lng)
+    gps_data = [[Lat[i],Lng[i]] for i in range(len(Lat))]
+    return gps_data
+
+# def RS_Kalman(data,l_size=5 ,g_size=5):
+#     Lat=signal.medfilt(lat,l_size)
+#     Lng=signal.medfilt(lng,g_size)
+#     drewgps(Lat,Lng)
+#     Lat=KalmanByGroup(Lat)
+#     Lng=KalmanByGroup(Lng)
+#     drewgps(Lat,Lng)
+#     gps_data = [[Lat[i],Lng[i]] for i in range(len(Lat))]
+#     return gps_data
+
+def calDistance(data):
+    ind = np.array(data).argsort()
+    left = data[ind[0]]
+    right = data[ind[-1]]
+    return abs(left - right)
+def KalmanByGroup(dataGroup):
+    i = 0
+    data = []
+    while True:
+        for j in range(i + 1,len(dataGroup) - 1,1):
+            if calDistance(dataGroup[i:j + 1]) > 0.0015:
+                if j - i > 10:
+                    data.extend(Kalman(dataGroup[i:j]))
+                else:
+                    data.extend(dataGroup[i:j])
+                i = j
+                break
+            elif i != j and j == len(dataGroup) - 2:
+                data.extend(Kalman(dataGroup[i:j]))
+                i = j
+        if i == len(dataGroup) - 2:
+            data.extend(dataGroup[-2:])
+            break
+    return data
+
 def KalmanFilterGPS(gpsData):
     kf = KalmanFilter(initial_state_mean=0.44, n_dim_obs=1)
     afteremGps=kf.filter(gpsData)[0]
@@ -110,9 +151,9 @@ def drowerror(L1,L2):
     plt.show()
 if __name__=='__main__':
     #print(__doc__)
-    la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\7-18-2015\\locationGPS.txt")
+    la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\11-7-2015\\locationGPS.txt")
     #KalmanFilterGPS()
-'''
+
     err=[]
     erraf=[]
     for i in range(1,len(la)):
@@ -126,4 +167,4 @@ if __name__=='__main__':
     plt.subplot(212)
     plt.plot(erraf)
     plt.show()
-'''
+
