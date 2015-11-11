@@ -16,14 +16,16 @@ def readfile(filename,date):
     for line in f:
         temp_location=[]
         sjson=json.loads(line)
-        temp_location.append(sjson["Location"]["Latitude"])
-        temp_location.append(sjson["Location"]["Longitude"])
-        temp_location.append(sjson["Location"]["Altitude"])
-        temp_location.append(sjson["Location"]["time"])
-        temp_location.append(sjson["Location"]["Speed"])
-        weidu.append(float(temp_location[0]))
-        jindu.append(float(temp_location[1]))
-        location.append(temp_location)
+        if line[2:10]=="Location":
+            #print(line[2:10])
+            temp_location.append(sjson["Location"]["Latitude"])
+            temp_location.append(sjson["Location"]["Longitude"])
+            temp_location.append(sjson["Location"]["Altitude"])
+            temp_location.append(sjson["Location"]["time"])
+        #temp_location.append(sjson["Location"]["Speed"])
+            weidu.append(float(temp_location[0]))
+            jindu.append(float(temp_location[1]))
+            location.append(temp_location)
     writeANS(filename,location)
     drewgps(weidu,jindu,date)
 def writeANS(txtfilename,data):
@@ -40,7 +42,7 @@ def writeANS(txtfilename,data):
         file_processGPS.writelines(',')
         file_processGPS.writelines(i[3])
         file_processGPS.writelines(',')
-        file_processGPS.writelines(i[4])
+        file_processGPS.writelines('0.0')
         file_processGPS.write('\n')
     file_processGPS.close()
 def drewgps(weidu,jindu,date):

@@ -151,7 +151,7 @@ def drowerror(L1,L2):
     plt.show()
 if __name__=='__main__':
     #print(__doc__)
-    la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\11-7-2015\\locationGPS.txt")
+    la,laafter=Get_Prime_GpsData(".\\GPS_Get_PreProcesser\\10-04-2015\\locationGPS.txt")
     #KalmanFilterGPS()
 
     err=[]

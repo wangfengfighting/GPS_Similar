@@ -35,7 +35,7 @@ def InitDictionary():
 if __name__=='__main__':
     print GetLabelFile()
     InitDictionary()
-    a=open('labelDic.pkl','rb')    #打开文件
-    k= pickle.load(a)
-    print(k)
-    print(k['road'])
+    # a=open('labelDic.pkl','rb')    #打开文件
+    # k= pickle.load(a)
+    #print(k)
+    #print(k['road'])

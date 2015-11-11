@@ -30,7 +30,10 @@ def write_labelTime2file(seq,filename):
     output=open(filename,'w')
     for i in range(0,len(seq)):
         if seq[i][3]!=0:
-            output.write(seq[i][0])#label
+            if seq[i][0]=='east_door2' or seq[i][0]=='east_door1' or seq[i][0]=='east_door3' or seq[i][0]=='east_door':
+                output.write('east_door'  )#label
+            else:
+                output.write(seq[i][0])
             output.write(',')
             output.write(seq[i][1])#begintime
             output.write(',')
