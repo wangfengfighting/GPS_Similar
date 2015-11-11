@@ -63,9 +63,15 @@ if __name__=='__main__':
     #     print(len(i))
     #     for j in i:
     #         print(j)
-    for i in range(9):
-        a=[1,2,3,4,5,6,7,8,9,11,12]
-        for k in a:
-            if k>=5:
-                print(k)
-                break
+    # for i in range(9):
+    #     a=[1,2,3,4,5,6,7,8,9,11,12]
+    #     for k in a:
+    #         if k>=5:
+    #             print(k)
+    #             break
+
+    a={}
+    a[1]='a'
+    a[2]='a'
+    a[3]='b'
+    a
