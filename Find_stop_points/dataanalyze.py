@@ -4,7 +4,7 @@ Created on Sat Jan 24 20:03:24 2015
 
 @author: yangruosong
 """
-
+from distance_mean_filter import GetDistance
 import numpy
 import pylab
 import math
@@ -328,22 +328,19 @@ def calSpeed(gps_data,timestamp,acc,draw = False):
         pylab.plot(ind,speed,'r')
         pylab.plot(ind,acc,'g')
         pylab.show()
+
+'''
+这是用计算 stay-point的位置信息的函数，输入是numpy格式的gpsdata，[ [x y]....]
+'''
 def getStayPoint(gps_data,timestamp):
     labels = []
     count = 0
     SP = []
     i = 0
-    while i < len(gps_data):
+    while i < len(gps_data)-1:
         for j in range(i + 1,len(gps_data),1):
-            p1 = CalPointDistance.Point()
-            p1.lat = gps_data[i][0]
-            p1.lng = gps_data[i][1]
-            p2 = CalPointDistance.Point()
-            p2.lat = gps_data[j][0]
-            p2.lng = gps_data[j][1]
-            dis = CalPointDistance.getDistance(p1,p2)
-            if dis >100 and (timestamp[j] - timestamp[i]).seconds > 180:
-                #print j - i
+            dis=GetDistance(gps_data[i][0],gps_data[i][1],gps_data[j][0],gps_data[j][1])
+            if dis > 130 and (timestamp[j] - timestamp[i]).seconds > 190:
                 labels.extend([count for k in range(j - i)])
                 count += 1
                 point = numpy.array(gps_data[i:j])
@@ -370,38 +367,39 @@ def init_rs_staypoint_time(labels,gps_point,timestamp,accur,StayPoint,labDIC,pat
         Fstop.write(',')
         Fstop.write(str(timestamp[i]))
         Fstop.write(',')
-        print labels[i]
         Fstop.write(str(labDIC[labels[i]]))
-        Fstop.write('\n')
+        if i !=len(gps_point)-1:
+            Fstop.write('\n')
 
-
-
-    print()
 
 def mian():
+    from Semantics_of_Trajectories import Calculate_semantic_of_point
     from stop_points import getfullfilepath
     full=getfullfilepath()
-    path_file=full[8].replace('locationGPS.txt','location.txt')
-    print(path_file)
-    gps_data,timestamp,accur = get_data(path_file)
-    print  len(gps_data)
-    print len(accur)
-    print len(timestamp)
-    labels,SP = getStayPoint(gps_data,timestamp)
-    labels.append(labels[len(labels)-1])
-    print('-----------')
-    print len(labels)
-    print len(SP)
-    print SP
-    from Semantics_of_Trajectories import Calculate_semantic_of_point
-    stoppointlabel=[]
-    labDIC={}
-    for  i  in range(len(SP)):
-        value=Calculate_semantic_of_point.Match_semantics(SP[i],80)
-        stoppointlabel.append(value)
-        labDIC[i]=value
-    print str(len(stoppointlabel)),'**********************'
-    init_rs_staypoint_time(labels,gps_data,timestamp,accur,SP,labDIC,path_file)
+    for n in range(len(full)):
+        path_file=full[n].replace('locationGPS.txt','location.txt')
+
+        gps_data,timestamp,accur = get_data(path_file)
+
+        # print len(accur)
+        # print len(timestamp)
+
+        labels,SP = getStayPoint(gps_data,timestamp)
+
+        labels.append(labels[len(labels)-1])
+
+        # print len(labels)
+        # print len(SP)
+        # print SP
+
+        stoppointlabel=[]
+        labDIC={}
+        for  i  in range(len(SP)):
+            value=Calculate_semantic_of_point.Match_semantics(SP[i],80)
+            stoppointlabel.append(value)
+            labDIC[i]=value
+        init_rs_staypoint_time(labels,gps_data,timestamp,accur,SP,labDIC,path_file)
+
 
 
 

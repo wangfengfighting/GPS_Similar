@@ -39,6 +39,10 @@ def Wv(a, b):
     b.lat = lw(b.lat, -74, 74);	
     return Td(oi(a.lng), oi(b.lng), oi(a.lat), oi(b.lat))
 def getDistance(a, b):	
+    """
+
+    :rtype : object
+    """
     c = Wv(a, b);
     return c
 
