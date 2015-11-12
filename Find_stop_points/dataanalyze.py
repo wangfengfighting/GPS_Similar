@@ -370,8 +370,10 @@ def mian():
     print len(SP)
     print SP
     from Semantics_of_Trajectories import Calculate_semantic_of_point
+    stoppointlabel=[]
     for  i  in SP:
-        print Calculate_semantic_of_point.Match_semantics(i,80)
+        stoppointlabel.append( Calculate_semantic_of_point.Match_semantics(i,80))
+
 
 
 
