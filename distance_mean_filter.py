@@ -44,6 +44,7 @@ def DistanceFilter(La,Lon,winsize):
         LONG.extend(TEMPLONG)
     return LA,LONG
 
-#if __name__=='__main__':
-#    print GetDistance(28.228225, 112.999492,28.228062, 112.999898)
-
+if __name__=='__main__':
+   import math
+   print GetDistance(28.228225, 112.999399,28.228062, 112.9998999)
+   print  math.sqrt((28.228225-28.228062)**2+(112.999399-112.9998999)**2)

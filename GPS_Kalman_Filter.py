@@ -141,6 +141,7 @@ def drewgps(weidu,jindu):
     plt.scatter(jindu,weidu,c='r',marker='.')
     #plt.savefig('.\\GPS_pic\\'+date+'.png',dpi=800)
     plt.show()
+    plt.hold()
 
 
 def drowerror(L1,L2):

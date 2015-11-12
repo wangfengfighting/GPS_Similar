@@ -68,7 +68,7 @@ def Match_semantics(sp,liminal=100):
         else:
             for road_item in translate_road_point:
                 disroad=GetDistance(center[0],center[1],road_item[0],road_item[1])
-                if disroad<=100:
+                if disroad<=50:
                     min_label="road"
                     break
             #return center[2]
@@ -82,7 +82,7 @@ def Match_semantics(sp,liminal=100):
 ==========================通过密度聚类来进行计算===========================================================
 采用 dbscan 算法来做，然后在试试sicence的cluster
 '''
-def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
+def dbscan(filepath,EPS=0.000526754031788,MIN_SAMPLE=15):
     semantic_label=[]
     XX=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
     #print(len(XX))
@@ -111,7 +111,7 @@ def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
 
             for i in db.core_sample_indices_:
                 #print Match_semantics(XX[i],200)
-                semantic_label.append(Match_semantics(XX[i],100))
+                semantic_label.append(Match_semantics(XX[i],60))
 
             #print Match_semantics(centor_point_of_cluster,350)
     return semantic_label
@@ -122,7 +122,7 @@ def dbscan(filepath,EPS=0.000492,MIN_SAMPLE=20):
 '''
 def science_cluster_semanstic(filepath):
     gps_semantic=np.loadtxt(filepath,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=False)
-    labels,centers=multiple_cluster.science_cluster(gps_semantic,num=15,cutoff_distance=0.000087,experience=0.000045)
+    labels,centers=multiple_cluster.science_cluster(gps_semantic,num=10,cutoff_distance = 0.000526754031788,experience = 0.00031)
     #print(len(gps_semantic))
     #print(len(labels))
     return labels,centers
@@ -244,15 +244,21 @@ def label_detect(path):
     semantic_label=[]
     adict={}
     labels,centers=science_cluster_semanstic(path)
-    # print   sorted(labels)
-    # print len(centers)
-    # print('----------')
+    print   (labels)
+    print (centers)
+    print('----------')
+    weidu=[]
+    jindu=[]
+    from GPS_Kalman_Filter import drewgps
     k=0
     for i in centers:
         if not math.isnan(i[0]):
             temp_label=Match_semantics(i,70)  #150是聚类中心的半径这样算的里面所有的点都是这个聚类label
             semantic_label.append([temp_label,i[0],i[1]])
             adict[k]=temp_label
+            weidu.append(i[0])
+            jindu.append(i[1])
+
         # elif i[0]== -1:
         #     print '---------------------------------------'
         #     semantic_label.append(["outlater",i[0],i[1]])
@@ -261,6 +267,15 @@ def label_detect(path):
             semantic_label.append(["Unkonwn",i[0],i[1]])
             adict[k]="Unkonwn"
         k+=1
+        Latitude,Longitude=np.loadtxt(path,dtype=float,delimiter=',',skiprows=1,usecols=(0,1),unpack=True)
+        drewgps(Latitude,Longitude)
+        drewgps(weidu,jindu)
+        break
+
+
+
+
+
     #print(adict)
     #print adict[99999]
     # for i in semantic_label:
@@ -270,10 +285,10 @@ def label_detect(path):
     # for key in semantic_seq:
     #     if key != -1:
     #         ss.append(adict[key])
-    write_semantic_tofile(adict,labels,path)
+    #write_semantic_tofile(adict,labels,path)
 
 if __name__=='__main__':
-    calculate_stop_point_tag()
+    #calculate_stop_point_tag()
 
     #下面用的是密度 science聚类的办法
     fullpath=stop_points.getfullfilepath()
