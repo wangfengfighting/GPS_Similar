@@ -357,23 +357,51 @@ def getStayPoint(gps_data,timestamp):
                 i = j + 1
                 break
     return labels,SP
+
+def init_rs_staypoint_time(labels,gps_point,timestamp,accur,StayPoint,labDIC,path_file):
+    path_file=path_file.replace('location.txt','RC_stoppoint.txt')
+    Fstop=open(path_file,'w+')
+    for i in range(0,len(gps_point)):
+        Fstop.write(str(gps_point[i][0]))
+        Fstop.write(',')
+        Fstop.write(str(gps_point[i][1]))
+        Fstop.write(',')
+        Fstop.write(str(accur[i]))
+        Fstop.write(',')
+        Fstop.write(str(timestamp[i]))
+        Fstop.write(',')
+        print labels[i]
+        Fstop.write(str(labDIC[labels[i]]))
+        Fstop.write('\n')
+
+
+
+    print()
+
 def mian():
     from stop_points import getfullfilepath
     full=getfullfilepath()
-    a=full[8].replace('locationGPS.txt','location.txt')
-    print(a)
-    gps_data,timestamp,accur = get_data(a)
-    print str(len(gps_data)),str(len(timestamp))
+    path_file=full[8].replace('locationGPS.txt','location.txt')
+    print(path_file)
+    gps_data,timestamp,accur = get_data(path_file)
+    print  len(gps_data)
+    print len(accur)
+    print len(timestamp)
     labels,SP = getStayPoint(gps_data,timestamp)
+    labels.append(labels[len(labels)-1])
     print('-----------')
-    print (labels)
+    print len(labels)
     print len(SP)
     print SP
     from Semantics_of_Trajectories import Calculate_semantic_of_point
     stoppointlabel=[]
-    for  i  in SP:
-        stoppointlabel.append( Calculate_semantic_of_point.Match_semantics(i,80))
-
+    labDIC={}
+    for  i  in range(len(SP)):
+        value=Calculate_semantic_of_point.Match_semantics(SP[i],80)
+        stoppointlabel.append(value)
+        labDIC[i]=value
+    print str(len(stoppointlabel)),'**********************'
+    init_rs_staypoint_time(labels,gps_data,timestamp,accur,SP,labDIC,path_file)
 
 
 

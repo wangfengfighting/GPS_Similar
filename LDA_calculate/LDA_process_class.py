@@ -23,6 +23,10 @@ class ldaHelper:
         #     print float(i[0])
 
         return self.calculateTimestamp(tempdata)
+    def Add_RCtimestamp(self,path):
+        tempdata=np.loadtxt(path, dtype=str,delimiter=',',usecols=(3,4))
+        return self.calculateTimestamp(tempdata)
+
 
     def calculateTimestamp(self,tempdata):
          labeldata=tempdata.tolist()
@@ -61,7 +65,7 @@ class ldaHelper:
              t.append(statelabel)
              t.append(beginTime)
              t.append(endTime)
-             t.append(str2Time(beginTime,endTime))
+             t.append(str2TimeRC(beginTime,endTime))
              theLast.append(t)
              t=[]
          #return finaltimestamp
@@ -71,9 +75,12 @@ def str2Time(timeStr1,timeStr2):
     t1 = datetime.datetime.strptime(timeStr1,'%m-%d-%Y %H:%M:%S')
     t2 = datetime.datetime.strptime(timeStr2,'%m-%d-%Y %H:%M:%S')
     return (t2-t1).seconds
-
+def str2TimeRC(timeStr1,timeStr2):
+    t1 = datetime.datetime.strptime(timeStr1,'%Y-%m-%d %H:%M:%S')
+    t2 = datetime.datetime.strptime(timeStr2,'%Y-%m-%d %H:%M:%S')
+    return (t2-t1).seconds
 
 if __name__=='__main__':
     a=ldaHelper()
-    ans=a.Add_timestamp('E:\\Research_Study\\GPS_Similar\\GPS_Get_PreProcesser\\7-10-2015\\semanticGPS.txt')
+    ans=a.Add_RCtimestamp('G:\\PostgraduatePROJECT\\GPS_Similar\\GPS_Get_PreProcesser\\11-5-2015\\RC_stoppoint.txt')
     print(ans)
