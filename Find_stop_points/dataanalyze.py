@@ -332,7 +332,7 @@ def calSpeed(gps_data,timestamp,acc,draw = False):
 '''
 这是用计算 stay-point的位置信息的函数，输入是numpy格式的gpsdata，[ [x y]....]
 '''
-def getStayPoint(gps_data,timestamp):
+def getStayPoint(gps_data,timestamp,disthreshold=130,timethreshold=190):
     labels = []
     count = 0
     SP = []
@@ -340,7 +340,7 @@ def getStayPoint(gps_data,timestamp):
     while i < len(gps_data)-1:
         for j in range(i + 1,len(gps_data),1):
             dis=GetDistance(gps_data[i][0],gps_data[i][1],gps_data[j][0],gps_data[j][1])
-            if dis > 130 and (timestamp[j] - timestamp[i]).seconds > 190:
+            if dis > disthreshold and (timestamp[j] - timestamp[i]).seconds > timethreshold:
                 labels.extend([count for k in range(j - i)])
                 count += 1
                 point = numpy.array(gps_data[i:j])
@@ -384,7 +384,7 @@ def mian():
         # print len(accur)
         # print len(timestamp)
 
-        labels,SP = getStayPoint(gps_data,timestamp)
+        labels,SP = getStayPoint(gps_data,timestamp,disthreshold=120,timethreshold=200)
 
         labels.append(labels[len(labels)-1])
 
