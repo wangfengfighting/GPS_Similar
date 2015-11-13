@@ -7,7 +7,7 @@ import  numpy as np
 import pandas as pd
 def Compute_center_of_budling():
     center_of_budling=[]
-    gpsdata=np.loadtxt("TAG_file.txt", dtype=str, delimiter=',', skiprows=1,usecols=(2,))
+    gpsdata=np.loadtxt(".\\TAG_file.txt", dtype=str, delimiter=',', skiprows=1,usecols=(2,))
     #print(gpsdata)
     ds=pd.read_table("TAG_file.txt",delimiter=',')
     ds['index_all']=pd.Series(range(len(ds)),index=ds.index)

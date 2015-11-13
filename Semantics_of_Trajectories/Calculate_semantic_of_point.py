@@ -68,7 +68,7 @@ def Match_semantics(sp,liminal=100):
         else:
             for road_item in translate_road_point:
                 disroad=GetDistance(center[0],center[1],road_item[0],road_item[1])
-                if disroad<=50:
+                if disroad<=30:
                     min_label="road"
                     break
             #return center[2]

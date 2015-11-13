@@ -384,9 +384,11 @@ def mian():
         # print len(accur)
         # print len(timestamp)
 
-        labels,SP = getStayPoint(gps_data,timestamp,disthreshold=120,timethreshold=200)
-
-        labels.append(labels[len(labels)-1])
+        labels,SP = getStayPoint(gps_data,timestamp,disthreshold=90,timethreshold=180)
+        #print len(labels)
+        #print(len(labels)-1)
+        print(full[n])
+        labels.append(labels[len(labels)-1]) #!!!!!!!!注意，labels的长度可能为0 好奇怪
 
         # print len(labels)
         # print len(SP)
@@ -395,7 +397,7 @@ def mian():
         stoppointlabel=[]
         labDIC={}
         for  i  in range(len(SP)):
-            value=Calculate_semantic_of_point.Match_semantics(SP[i],80)
+            value=Calculate_semantic_of_point.Match_semantics(SP[i],90)
             stoppointlabel.append(value)
             labDIC[i]=value
         init_rs_staypoint_time(labels,gps_data,timestamp,accur,SP,labDIC,path_file)
