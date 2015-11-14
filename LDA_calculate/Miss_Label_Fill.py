@@ -10,28 +10,34 @@ import datetime
 def  Read_RC_stoppoint(path):
     RC_stop=np.loadtxt(path,dtype=str, delimiter=',',usecols=(0,1,2,3,4))
                        #dtype={'names': [ 'Latitude', 'Longitude','accur','time','label'] ,'formats': [ 'f18','f18','f6','S20','S16']},
-
                        #converters={3:lambda s:datetime.datetime.strptime(s,'%Y-%m-%d %H:%M:%S')},
-
     #print RC_stop
     RCedSP=[]
-
     #print str2time(RC_stop[199][3],RC_stop[0][3])
     index=0
     while index < len(RC_stop)-1:
         temp=[]
         if RC_stop[index][4]==RC_stop[index+1][4]:
+            # temp.append(RC_stop[index][0])
+            # temp.append(RC_stop[index][1])
+            # temp.append(RC_stop[index][2])
+            # temp.append(RC_stop[index][3])
+            # temp.append(RC_stop[index][4])
             temp.extend(RC_stop[index][0:5])
             RCedSP.append(temp)
         else:
             if str2time(RC_stop[index][3],RC_stop[index+1][3])>=20*60:
-                temp.append(RC_stop[index][0:5])
+                temp.extend(RC_stop[index][0:5])
                 RCedSP.append(temp)
                 temp=[]
-                temp.append(RC_stop[index][0:5])
-                temp[3]=timedela(RC_stop[index][3])
+                temp.extend(RC_stop[index][0:5])
+
+                # for i in range(5):
+                #     print(i)
+                #     print(temp[0][i])
+                temp[3]=timedela(RC_stop[index+1][3])
                 RCedSP.append(temp)
-                print(index)
+                #print(index)
             else:
                 temp.extend(RC_stop[index][0:5])
                 RCedSP.append(temp)
@@ -39,6 +45,7 @@ def  Read_RC_stoppoint(path):
     last=[]
     last.extend(RC_stop[len(RC_stop)-1][0:5])
     RCedSP.append(last)
+    #print(RCedSP)
     writeRCstop2addLabel(path,RCedSP)
 
 def timedela(str):
@@ -68,10 +75,18 @@ def writeRCstop2addLabel(filename,SP):
         if i != len(SP)-1:
             AfterSP.write('\n')
     AfterSP.close()
+def main():
+    from label_add_time import GetSemanticGPSpath
+    full=GetSemanticGPSpath()
+    for n in range(len(full)):
+        path_file=full[n].replace('semanticGPS.txt','RC_stoppoint.txt')
+        print(path_file)
+        Read_RC_stoppoint(path_file)
 
-
+    print 'ok.....have process over'
 
 if __name__=='__main__':
+    main()
     # s1='2014-05-22 07:02:32'
     # s2='2014-05-22 08:48:32'
     # print(len(s1))
@@ -80,5 +95,5 @@ if __name__=='__main__':
     # d=date_time1+datetime.timedelta(seconds=-3)
     # print(d)
 
-    Read_RC_stoppoint('G:\\PostgraduatePROJECT\\GPS_Similar\\GPS_Get_PreProcesser\\5-23-2014\\RC_stoppoint.txt')
-    print('over')
+    # Read_RC_stoppoint('E:\\Research_Study\\GPS_Similar\\GPS_Get_PreProcesser\\11-9-2015\\RC_stoppoint.txt')
+    # print('over')
