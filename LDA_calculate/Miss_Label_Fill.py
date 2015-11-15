@@ -62,6 +62,19 @@ def str2time(str1,str2):
 def writeRCstop2addLabel(filename,SP):
     file_name=filename.replace('RC_stoppoint.txt','RCed_stoppoint.txt')
     AfterSP=open(file_name,'w+')
+    '''
+    以下的写主要是初始化一个开始位置
+    '''
+    AfterSP.write(SP[0][0])
+    AfterSP.write(',')
+    AfterSP.write(SP[0][1])
+    AfterSP.write(',')
+    AfterSP.write(SP[0][2])
+    AfterSP.write(',')
+    AfterSP.write((SP[0][3]).split(' ')[0]+' '+'00:00:00')
+    AfterSP.write(',')
+    AfterSP.write((SP[0][4]))
+    AfterSP.write('\n')
     for i in range(len(SP)):
         AfterSP.write(SP[i][0])
         AfterSP.write(',')

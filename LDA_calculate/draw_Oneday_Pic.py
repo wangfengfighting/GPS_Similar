@@ -56,6 +56,7 @@ def canculateDate(str,strbegin):
     return (datenow-datestar).seconds
 
 def drewPic(seq):#seq=[  [  [],[],[]  ], .....   ]  s,e,label
+    plt.xlim(0,60*60*24+1)
     k=1
     for i in range(len(seq)):
         for j in range(len(seq[i])):
@@ -66,4 +67,5 @@ def drewPic(seq):#seq=[  [  [],[],[]  ], .....   ]  s,e,label
 
 if __name__=='__main__':
     #denggaoxian()
+    draw_Label_Time('RClabelTime.txt')
     draw_Label_Time('RCedlabelTime.txt')

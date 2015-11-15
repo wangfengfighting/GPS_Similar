@@ -358,6 +358,19 @@ def getStayPoint(gps_data,timestamp,disthreshold=130,timethreshold=190):
 def init_rs_staypoint_time(labels,gps_point,timestamp,accur,StayPoint,labDIC,path_file):
     path_file=path_file.replace('location.txt','RC_stoppoint.txt')
     Fstop=open(path_file,'w+')
+    '''
+    以下的写主要是初始化一个开始位置
+    '''
+    # Fstop.write(str(gps_point[0][0]))
+    # Fstop.write(',')
+    # Fstop.write(str(gps_point[0][1]))
+    # Fstop.write(',')
+    # Fstop.write(str(accur[0]))
+    # Fstop.write(',')
+    # Fstop.write(str(timestamp[0]).split(' ')[0]+' '+'00:00:00')
+    # Fstop.write(',')
+    # Fstop.write(str(labDIC[labels[0]]))
+    # Fstop.write('\n')
     for i in range(0,len(gps_point)):
         Fstop.write(str(gps_point[i][0]))
         Fstop.write(',')
