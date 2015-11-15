@@ -82,9 +82,7 @@ def main():
         path_file=full[n].replace('semanticGPS.txt','RC_stoppoint.txt')
         print(path_file)
         Read_RC_stoppoint(path_file)
-
     print 'ok.....have process over'
-
 if __name__=='__main__':
     main()
     # s1='2014-05-22 07:02:32'
@@ -94,6 +92,5 @@ if __name__=='__main__':
     # date_time2 = datetime.datetime.strptime(s2,'%Y-%m-%d %H:%M:%S')
     # d=date_time1+datetime.timedelta(seconds=-3)
     # print(d)
-
     # Read_RC_stoppoint('E:\\Research_Study\\GPS_Similar\\GPS_Get_PreProcesser\\11-9-2015\\RC_stoppoint.txt')
     # print('over')

@@ -17,21 +17,18 @@ class ldaHelper:
         #                converters={3:lambda s:float(time.mktime((datetime.datetime.strptime(s,'%m-%d-%Y %H:%M:%S')).timetuple()))},
         #                usecols=(3,5))
         tempdata=np.loadtxt(path, dtype=str,delimiter=',',usecols=(3,5))
-
         #print tempdata
         # for i in tempdata:
         #     print float(i[0])
-
         return self.calculateTimestamp(tempdata)
     def Add_RCtimestamp(self,path):
-        tempdata=np.loadtxt(path, dtype=str,delimiter=',',usecols=(3,4))
+        tempdata=np.loadtxt(path, dtype=str,delimiter=',',usecols=(3,4))   #3,4 :time&labels
         return self.calculateTimestamp(tempdata)
 
 
     def calculateTimestamp(self,tempdata):
          labeldata=tempdata.tolist()
          #print labeldata
-
          labeldata.reverse()
          temp=[]
          templast=[]
@@ -82,5 +79,5 @@ def str2TimeRC(timeStr1,timeStr2):
 
 if __name__=='__main__':
     a=ldaHelper()
-    ans=a.Add_RCtimestamp('G:\\PostgraduatePROJECT\\GPS_Similar\\GPS_Get_PreProcesser\\11-5-2015\\RC_stoppoint.txt')
+    ans=a.Add_RCtimestamp('E:\\Research_Study\\GPS_Similar\\GPS_Get_PreProcesser\\11-7-2015\\RC_stoppoint.txt')
     print(ans)
