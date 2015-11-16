@@ -8,31 +8,54 @@ import numpy as np
 import jieba
 from gensim import corpora,models,similarities
 import math
+import datetime
 from label_add_time import GetSemanticGPSpath
 def create_model():
     fullpath=GetSemanticGPSpath()
     train_set=[]
-    for file in fullpath:
+    onday=[]
+    for file in fullpath:  #一个file 就是一天的数据路径，也就是一天的数据,外层一个for循环就是 写找完一天的记录
         filename=file.replace('semanticGPS.txt','RClabelTime.txt')  #这里可以修改是用啥子文件名，就是说用是miss_label后的还之前的
         tempdata=np.loadtxt(filename,dtype=str,delimiter=',',usecols=(0,1,3)) #label,starttime,continuetime
+        tempword=[]
         for i in range(len(tempdata)):
-            tempword=[]
-            s=tempdata[i][0]+'_'+(tempdata[i][1]).replace(' ','_')+'_'+tempdata[i][2]
+            datasstrip=tempdata[i][1].split(' ')
+            s=tempdata[i][0]+'_'+datasstrip[0]+'_'+time2hour(datasstrip[1])+'_'+str(int(tempdata[i][2])//(10*60))
             tempword.append(s)
-            train_set.append(tempword)
-    print(train_set)
+        train_set.append(tempword)
+    #print(train_set[0])
     dic = corpora.Dictionary(train_set)
     corpus = [dic.doc2bow(text) for text in train_set]
     tfidf = models.TfidfModel(corpus)
     corpus_tfidf = tfidf[corpus]
-    lda = models.LdaModel(corpus_tfidf, id2word = dic, num_topics = 17)
+    lda = models.LdaModel(corpus_tfidf, id2word = dic, num_topics = 24)
     corpus_lda = lda[corpus_tfidf]
-    lda.save("SemanticLda"+str(27)+".txt")
-    dic.save("SemanticDic"+str(27)+".txt")
-    tfidf.save("SemanticTFIDF"+str(27)+".txt")
-    return  lda,dic,tfidf
+    lda.save("SemanticLda"+str(24)+".txt")
+    dic.save("SemanticDic"+str(24)+".txt")
+    tfidf.save("SemanticTFIDF"+str(24)+".txt")
+    return  lda,dic,tfidf,train_set,[]
 
+def time2hour(strtime):
+    d=datetime.datetime.strptime(strtime,'%H:%M:%S')
+    return  str((d).hour)
 
-
+def LDAInference(lda,dic,tfidf,sentence):
+    sentence = dic.doc2bow(sentence)
+    sentence = tfidf[sentence]
+    prob = lda.inference([sentence])
+    prob = prob[0][0]
+    prob = prob / prob.sum()
+    return prob
+def find_max_LDA():
+    lda,dic,tfidf,trainset,onday=create_model()
+    prob_predict=LDAInference(lda,dic,tfidf,onday)
+    print(onday)
+    print(trainset[0:6])
+    prob_train=LDAInference(lda,dic,tfidf,list(trainset[i][0] for i in range(6)))
+    fenzi=np.dot(prob_predict,prob_train)
+    fenmu=math.sqrt(np.dot(prob_predict,prob_predict))*math.sqrt(np.dot(prob_train,prob_train))
+    temp_lda=fenzi/fenmu
+    print(temp_lda)
 if __name__=='__main__':
     create_model()
+    #find_max_LDA()
