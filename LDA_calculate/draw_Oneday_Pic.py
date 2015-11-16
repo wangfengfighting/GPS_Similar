@@ -56,14 +56,24 @@ def canculateDate(str,strbegin):
     return (datenow-datestar).seconds
 
 def drewPic(seq):#seq=[  [  [],[],[]  ], .....   ]  s,e,label
+    # plt.xlim(0,60*60*24+1)
+    # k=1
+    # for i in range(len(seq)):
+    #     for j in range(len(seq[i])):
+    #         plt.plot([seq[i][j][0],seq[i][j][1]],[k,k],color=labelColor[seq[i][j][2]],linewidth=5)
+    #     k+=1
+    # plt.savefig('test.png',dpi=300)
+    # plt.show()
+
     plt.xlim(0,60*60*24+1)
     k=1
     for i in range(len(seq)):
         for j in range(len(seq[i])):
-            plt.plot([seq[i][j][0],seq[i][j][1]],[k,k],color=labelColor[seq[i][j][2]],linewidth=5)
+            plt.plot([seq[i][j][0],seq[i][j][1]],[k,k],color=labelColor[seq[i][j][2]],linewidth=4)
         k+=1
-
+    #plt.savefig('test.png',dpi=300)
     plt.show()
+
 
 if __name__=='__main__':
     #denggaoxian()

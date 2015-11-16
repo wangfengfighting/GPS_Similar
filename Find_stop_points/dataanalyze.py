@@ -396,7 +396,6 @@ def mian():
 
         # print len(accur)
         # print len(timestamp)
-
         labels,SP = getStayPoint(gps_data,timestamp,disthreshold=90,timethreshold=180)
         #print len(labels)
         #print(len(labels)-1)
