@@ -17,15 +17,15 @@ def create_model():
         tempdata=np.loadtxt(filename,dtype=str,delimiter=',',usecols=(0,1,3)) #label,starttime,continuetime
         for i in range(len(tempdata)):
             tempword=[]
-            s=tempdata[i][0]+'_'+(tempdata[i][0]).replace(' ','_')+'_'+tempdata[i][0]
+            s=tempdata[i][0]+'_'+(tempdata[i][1]).replace(' ','_')+'_'+tempdata[i][2]
             tempword.append(s)
             train_set.append(tempword)
-
+    print(train_set)
     dic = corpora.Dictionary(train_set)
     corpus = [dic.doc2bow(text) for text in train_set]
     tfidf = models.TfidfModel(corpus)
     corpus_tfidf = tfidf[corpus]
-    lda = models.LdaModel(corpus_tfidf, id2word = dic, num_topics = 27)
+    lda = models.LdaModel(corpus_tfidf, id2word = dic, num_topics = 17)
     corpus_lda = lda[corpus_tfidf]
     lda.save("SemanticLda"+str(27)+".txt")
     dic.save("SemanticDic"+str(27)+".txt")
