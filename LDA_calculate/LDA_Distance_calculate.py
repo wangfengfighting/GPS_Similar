@@ -15,7 +15,7 @@ def create_model():
     for file in fullpath:
         filename=file.replace('semanticGPS.txt','RClabelTime.txt')  #这里可以修改是用啥子文件名，就是说用是miss_label后的还之前的
         tempdata=np.loadtxt(filename,dtype=str,delimiter=',',usecols=(0,1,3)) #label,starttime,continuetime
-        for i in range(tempdata):
+        for i in range(len(tempdata)):
             tempword=[]
             s=tempdata[i][0]+'_'+(tempdata[i][0]).replace(' ','_')+'_'+tempdata[i][0]
             tempword.append(s)
