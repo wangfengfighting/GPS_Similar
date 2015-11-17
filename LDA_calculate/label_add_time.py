@@ -67,6 +67,16 @@ def RC_Label_Time_process():
         f=file.replace('semanticGPS.txt','RC_stoppoint.txt')
         write_labelTime2file(lda.Add_RCtimestamp(f),f)
         print('have done %s'%f)
+        #分类的用户的文件夹
+    from getDir import GetDirName
+    import os
+    getdir=GetDirName()
+    parent_path = os.path.dirname(os.getcwd())
+    AllUserFiles,AllFiles,other=getdir.getUserFiles(parent_path+'\\'+'starlog')
+    for path_file in other:
+        for i in range(len(path_file)):
+            path_file_name=parent_path+path_file[i]+os.sep+'RC_stoppoint.txt'
+            write_labelTime2file(lda.Add_RCtimestamp(path_file_name),path_file_name)
 
 def RCed_Label_Time_process():
     filelist=GetSemanticGPSpath()
@@ -76,10 +86,26 @@ def RCed_Label_Time_process():
         write_labelTime2file(lda.Add_RCtimestamp(f),f)
         print('have done %s'%f)
 
+                #分类的用户的文件夹
+    from getDir import GetDirName
+    import os
+    getdir=GetDirName()
+    parent_path = os.path.dirname(os.getcwd())
+    AllUserFiles,AllFiles,other=getdir.getUserFiles(parent_path+'\\'+'starlog')
+    for path_file in other:
+        for i in range(len(path_file)):
+            path_file_name=parent_path+path_file[i]+os.sep+'RCed_stoppoint.txt'
+            write_labelTime2file(lda.Add_RCtimestamp(path_file_name),path_file_name)
+
 def main():
     #Label_Time_process()
     RC_Label_Time_process()
     RCed_Label_Time_process()
+
+
+
+
+
 if __name__=='__main__':
     main()
 

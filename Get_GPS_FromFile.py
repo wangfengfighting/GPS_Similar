@@ -27,7 +27,7 @@ def readfile(filename,date):
             jindu.append(float(temp_location[1]))
             location.append(temp_location)
     writeANS(filename,location)
-    drewgps(weidu,jindu,date)
+    #drewgps(weidu,jindu,date)
 def writeANS(txtfilename,data):
     txtfilename=txtfilename.replace("location","locationGPS")
     file_processGPS=open(r'%s'%txtfilename,'w+')
@@ -61,3 +61,7 @@ if __name__=='__main__':
     for wenjianjia in dirlist:
         print ".\\GPS_Get_PreProcesser"+  '\\'  +  wenjianjia  +  '\\'  +   'location.txt',wenjianjia
         readfile(".\\GPS_Get_PreProcesser"+  '\\'  +  wenjianjia  +  '\\'  +   'location.txt',wenjianjia)
+    #下面是写分开每个用户的结果哦
+    AllUserFiles,AllFiles,other=getdir.getUserFiles()
+    for wenjianjia in AllFiles:
+        readfile(wenjianjia  + os.sep+ 'location.txt',wenjianjia)

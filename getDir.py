@@ -18,34 +18,62 @@ class GetDirName:
                     pass
                 else:
                     dirList.append(f)
-
-
         return dirList
 
-def getUserFile():
-    import os
-    import os.path
-    rootdir =".\\starlog"                                 # 指明被遍历的文件夹
-    for parent,dirnames,filenames in os.walk(rootdir):
-        for dirname in dirnames:
-            print 'parent is:'+parent
-            print 'dirname is:'+dirname
-            print('full is')+os.path.join(parent,dirname)
+    def getUser(self,spath='.\\starlog'):
+        a=os.walk(spath)
+        for i in a:
+            print(i)
+
+    def getUserFiles(self,sPath=".\\starlog"):
+        a=GetDirName()
+        dir=a.printPath(sPath)
+        dir.sort()
+        AllUserFiles=[] #一个用户是一个列表
+        AllFiles=[]  # 所有用户的文件列表列表
+        otherwenjian=[]
+        for i in dir :
+            otherwenjian.append(['\\starlog'+os.sep+i+os.sep+s for s in a.printPath(sPath+os.sep+i) ])
+            AllUserFiles.append( [ sPath+os.sep+i+os.sep+s for s in a.printPath(sPath+os.sep+i) ])
+        print(AllUserFiles)
+        for f in AllUserFiles:
+            for k in range(len(f)):
+                AllFiles.append(f[k])
+    #print(AllFiles)
+        print(otherwenjian)
+        return AllUserFiles,AllFiles,otherwenjian
 
 
 
-#     for parent,dirnames,filenames in os.walk(rootdir):    #三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-# 　      for dirname in  dirnames:                       #输出文件夹信息
-#     　　    print "parent is:" + parent
-# 　　　　    print  "dirname is" + dirname
+
+
+def getUserFiles():
+        a=GetDirName()
+        dir=a.printPath("starlog")
+        dir.sort()
+        AllUserFiles=[] #一个用户是一个列表
+        AllFiles=[]  # 所有用户的文件列表列表
+        otherwenjian=[]
+        for i in dir :
+            otherwenjian.append(['\\starlog'+os.sep+i+os.sep+s for s in a.printPath('.\\starlog'+os.sep+i) ])
+            AllUserFiles.append( [ '.\\starlog'+os.sep+i+os.sep+s for s in a.printPath('.\\starlog'+os.sep+i) ])
+    #print(AllUserFiles)
+        for f in AllUserFiles:
+            for k in range(len(f)):
+                AllFiles.append(f[k])
+    #print(AllFiles)
+        print(otherwenjian)
+        return AllUserFiles,AllFiles,otherwenjian
+
 
 
 if __name__=='__main__':
     a=GetDirName()
     dir=a.printPath(".\\starlog")
     dir.sort()
-    print(len(dir))
-    for i in dir :
-        print(a.printPath('.\\starlog'+'\\'+i))
-        print('-------------------------------')
-    getUserFile()
+    #getUserFiles()
+    # print(len(dir))
+    # for i in dir :
+    #     print(a.printPath('.\\starlog'+'\\'+i))
+    #     print('-------------------------------')
+    a.getUser('.\\starlog')

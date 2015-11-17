@@ -51,11 +51,12 @@ def draw_Label_Time(picName):
 
 
 def canculateDate(str,strbegin):
+
     datestar=datetime.datetime.strptime(strbegin,'%Y-%m-%d')
     datenow=datetime.datetime.strptime(str,'%Y-%m-%d %H:%M:%S')
     return (datenow-datestar).seconds
 
-def drewPic(seq):#seq=[  [  [],[],[]  ], .....   ]  s,e,label
+def drewPic(seq,title='RClabelTime'):#seq=[  [  [],[],[]  ], .....   ]  s,e,label
     # plt.xlim(0,60*60*24+1)
     # k=1
     # for i in range(len(seq)):
@@ -72,10 +73,42 @@ def drewPic(seq):#seq=[  [  [],[],[]  ], .....   ]  s,e,label
             plt.plot([seq[i][j][0],seq[i][j][1]],[k,k],color=labelColor[seq[i][j][2]],linewidth=4)
         k+=1
     #plt.savefig('test.png',dpi=300)
-    plt.show()
+    plt.title(title.split('\\')[4]+'_'+title.split('\\')[5])
 
+    plt.savefig('E:\\Research_Study\\GPS_Similar\\onday\\'+title.split('\\')[4]+title.split('\\')[5]+'.png')
+    plt.close()
+    #plt.show()
+    #plt.show()
+
+
+def drawfenkai(filename):
+
+    from getDir import GetDirName
+    import os
+    getdir=GetDirName()
+    parent_path = os.path.dirname(os.getcwd())
+    AllUserFiles,AllFiles,other=getdir.getUserFiles(parent_path+'\\'+'starlog')
+
+    for path_file in other:
+        TimePic=[]
+        for i in range(len(path_file)):
+            temp=[]
+            path_file_name=parent_path+path_file[i]+os.sep+filename
+            #print(path_file_name)
+            data = np.loadtxt(path_file_name,dtype=str,delimiter=',',usecols=(0,1,2),unpack=False)
+            start=data[1][1].split(' ')[0]
+            for i in range(len(data)):
+                tmp=[]
+                tmp.append(canculateDate(data[i][1],start))
+                tmp.append(canculateDate(data[i][2],start))
+                tmp.append(data[i][0])
+                temp.append(tmp)
+            TimePic.append(temp)
+        print(path_file_name)
+        drewPic(TimePic,path_file_name)
 
 if __name__=='__main__':
     #denggaoxian()
-    draw_Label_Time('RClabelTime.txt')
-    draw_Label_Time('RCedlabelTime.txt')
+    # draw_Label_Time('RClabelTime.txt')
+    # draw_Label_Time('RCedlabelTime.txt')
+    drawfenkai('RClabelTime.txt')

@@ -391,9 +391,7 @@ def mian():
     full=getfullfilepath()
     for n in range(len(full)):
         path_file=full[n].replace('locationGPS.txt','location.txt')
-
         gps_data,timestamp,accur = get_data(path_file)
-
         # print len(accur)
         # print len(timestamp)
         labels,SP = getStayPoint(gps_data,timestamp,disthreshold=90,timethreshold=180)
@@ -401,11 +399,9 @@ def mian():
         #print(len(labels)-1)
         print(full[n])
         labels.append(labels[len(labels)-1]) #!!!!!!!!注意，labels的长度可能为0 好奇怪
-
         # print len(labels)
         # print len(SP)
         # print SP
-
         stoppointlabel=[]
         labDIC={}
         for  i  in range(len(SP)):
@@ -413,6 +409,28 @@ def mian():
             stoppointlabel.append(value)
             labDIC[i]=value
         init_rs_staypoint_time(labels,gps_data,timestamp,accur,SP,labDIC,path_file)
+
+    #分类的用户的文件夹
+    from getDir import GetDirName
+    import os
+    getdir=GetDirName()
+    parent_path = os.path.dirname(os.getcwd())
+
+    AllUserFiles,AllFiles,other=getdir.getUserFiles(parent_path+'\\'+'starlog')
+    for path_file in other:
+        for i in range(len(path_file)):
+            path_file_name=parent_path+path_file[i]+os.sep+'location.txt'
+            gps_data,timestamp,accur = get_data(path_file_name)
+            labels,SP = getStayPoint(gps_data,timestamp,disthreshold=90,timethreshold=180)
+            print(path_file[i])
+            labels.append(labels[len(labels)-1]) #!!!!!!!!注意，labels的长度可能为0 好奇怪
+            stoppointlabel=[]
+            labDIC={}
+            for  i  in range(len(SP)):
+                value=Calculate_semantic_of_point.Match_semantics(SP[i],90)
+                stoppointlabel.append(value)
+                labDIC[i]=value
+            init_rs_staypoint_time(labels,gps_data,timestamp,accur,SP,labDIC,path_file_name)
 
 
 

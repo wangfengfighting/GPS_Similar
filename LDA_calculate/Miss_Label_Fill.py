@@ -96,6 +96,17 @@ def main():
         print(path_file)
         Read_RC_stoppoint(path_file)
     print 'ok.....have process over'
+      #分类的用户的文件夹
+    from getDir import GetDirName
+    import os
+    getdir=GetDirName()
+    parent_path = os.path.dirname(os.getcwd())
+    AllUserFiles,AllFiles,other=getdir.getUserFiles(parent_path+'\\'+'starlog')
+    for path_file in other:
+        for i in range(len(path_file)):
+            path_file_name=parent_path+path_file[i]+os.sep+'RC_stoppoint.txt'
+            Read_RC_stoppoint(path_file_name)
+    print 'ok.....have process over'
 if __name__=='__main__':
     main()
     # s1='2014-05-22 07:02:32'
