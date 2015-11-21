@@ -75,7 +75,7 @@ def drewPic(seq,title='RClabelTime'):#seq=[  [  [],[],[]  ], .....   ]  s,e,labe
     #plt.savefig('test.png',dpi=300)
     plt.title(title.split('\\')[4]+'_'+title.split('\\')[5])
 
-    plt.savefig('E:\\Research_Study\\GPS_Similar\\onday\\'+title.split('\\')[4]+title.split('\\')[5]+'.png')
+    plt.savefig('G:\\PostgraduatePROJECT\\GPS_Similar\\onday\\'+title.split('\\')[4]+title.split('\\')[5]+'.png')
     plt.close()
     #plt.show()
     #plt.show()
