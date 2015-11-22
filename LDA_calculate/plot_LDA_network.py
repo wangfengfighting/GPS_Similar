@@ -7,7 +7,8 @@ import networkx as nx
 from decimal import *
 data = np.loadtxt('LDAednetwork.txt',dtype=str,delimiter=',',usecols=(0,1,2))
 
-Dic={'u000':'yrs','u001':'xym','u002':'tzh','u003':'wf','u004':'lh','u005':'xym2'}
+#Dic={'u000':'yrs','u001':'xym','u002':'tzh','u003':'wf','u004':'lh','u005':'xym2'}
+Dic={'u000':'u000','u001':'u001','u002':'u002','u003':'u003','u004':'u004','u005':'u005'}
 
 print (data)
 G = nx.Graph()
