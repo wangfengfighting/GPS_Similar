@@ -67,7 +67,7 @@ if __name__=='__main__':
     getdir=GetDirName()
     dirlist=getdir.printPath(".\\GPS_Get_PreProcesser")
     for dir in dirlist:
-        Fulldirlist.append(".\\GPS_Get_PreProcesser"+"\\"+dir+"\\"+'locationGPS.txt')
+        Fulldirlist.append(".\\GPS_Get_PreProcesser"+"\\"+dir+"\\"+'RCed_stoppoint.txt')
     print(Fulldirlist)
 
     '''
