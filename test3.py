@@ -55,10 +55,15 @@ def kk(a):
 
 def testFrequency():
     from fp_growth import find_frequent_itemsets
-    for itemset, support in find_frequent_itemsets(f, 4, True):
-        print((itemset,support))
+    k=[]
 
-def table2dic(semantic):
+    for itemset, support in find_frequent_itemsets(f, 4, True):
+        print itemset,support
+
+        k.append([itemset,support])
+
+    print k
+def ALL_user_table2dic(semantic):
     temp_semanic=list(set(semantic))
     dic_temp={}
     for i in range(len(temp_semanic)):
@@ -91,5 +96,5 @@ if __name__=='__main__':
     #             print(k)
     #             break
     testFrequency()
-    print table2dic(b)
+    #print table2dic(b)
 

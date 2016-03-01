@@ -13,7 +13,7 @@ class GetDirName:
         dirList=[]
         files=os.listdir(path)
         for f in files:
-            if (os.path.isdir((path+'\\'+f))):
+            if (os.path.isdir((path+os.sep+f))):
                 if(f[0]=='.'):
                     pass
                 else:
@@ -33,7 +33,7 @@ class GetDirName:
         AllFiles=[]  # 所有用户的文件列表列表
         otherwenjian=[]
         for i in dir :
-            otherwenjian.append(['\\starlog'+os.sep+i+os.sep+s for s in a.printPath(sPath+os.sep+i) ])
+            otherwenjian.append([os.sep+'starlog'+os.sep+i+os.sep+s for s in a.printPath(sPath+os.sep+i) ])
             AllUserFiles.append( [ sPath+os.sep+i+os.sep+s for s in a.printPath(sPath+os.sep+i) ])
         print(AllUserFiles)
         for f in AllUserFiles:
@@ -69,11 +69,11 @@ def getUserFiles():
 
 if __name__=='__main__':
     a=GetDirName()
-    dir=a.printPath(".\\starlog")
-    dir.sort()
+    # dir=a.printPath(".\\starlog")
+    # dir.sort()
     #getUserFiles()
     # print(len(dir))
     # for i in dir :
     #     print(a.printPath('.\\starlog'+'\\'+i))
     #     print('-------------------------------')
-    a.getUser('.\\starlog')
+    a.getUser('\starlog')
