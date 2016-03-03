@@ -4,6 +4,7 @@ import numpy as np
 from getDir import GetDirName
 import os
 from fp_growth import find_frequent_itemsets
+import pickle
 def getAll_label2dic():
     getdir=GetDirName()
     Fulldirlist=[]
@@ -32,23 +33,30 @@ def getAll_label2dic():
                 allLabelSet.append(item)
     for index in range(len(allLabelSet)):
         allLabelDic[allLabelSet[index]]=str(index)
-
+    output=open('alllabelDic.pkl','wb')
+    pickle.dump(allLabelDic,output)
     return allLabelSet,allLabelDic
 
 
-def getFrequentItem(filepath,labelDic):
+def getFrequentItem(filepath):
+    dicfile=file('alllabelDic.pkl','rb')
+    labelDic=pickle.load(dicfile)
     labelTag=np.loadtxt(filepath,dtype=str,delimiter=',',usecols=(4,))
     dic_labelTag=[]
     for item in labelTag:
         if item in labelDic.keys():
+            #print (labelDic[item])
             dic_labelTag.append(labelDic[item])
-
+    print(dic_labelTag)
     frequentSet=[]  #frequentSet is the set of frequent item,like:[[['1'], 4], [['2', '1'], 4]] first is frequent tag,second is the support dgree.
     for itemset, support in find_frequent_itemsets(dic_labelTag, 4, True):
-        frequentSet.append([itemset,support])
+        #frequentSet.append([itemset,support])
+        print itemset,support
 
     return dic_labelTag,frequentSet
 
 if __name__=='__main__':
 
     print getAll_label2dic()
+
+    print getFrequentItem('/home/lym/workspace/GPS_Similar/starlog/u001/8-29-2015/RCed_stoppoint.txt')

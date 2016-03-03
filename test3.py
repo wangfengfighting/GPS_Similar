@@ -8,7 +8,9 @@ c=[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 b=['8_bedroom', '8_bedroom', '8_bedroom', 'Unknown', 'Unknown', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'backYH', '103', '103', '103', '103', '103', '601', '601', '601', '601', '601', '601', '601', '103', '103', 'backYH', 'pdl', 'pdl', 'pdl', 'pdl', 'backYH', 'pdl', 'backYH', 'pdl', 'backYH', 'pdl', 'pdl', 'backYH', 'pdl', 'pdl', 'backYH', 'pdl', 'backYH', 'pdl', 'backYH', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'backYH', '103', '103', '103', '601', '103', '102', '601', '601', '601', '601', '601', '103', '103', 'backYH', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'Unknown', 'Unknown', '8_bedroom', '8_bedroom', '8_bedroom', '8_bedroom', '8_bedroom', '8_bedroom', 'Unknown', 'Unknown', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'backYH', '103', '103', '102', '102', '101', '101', 'playground', 'library', 'library', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'east_door', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'library', 'library', '101', '102', '102', '103', '103', '103', 'backYH', 'pdl', 'pdl', 'pdl', 'backYH', 'pdl', 'backYH', 'pdl', 'backYH', 'THbuliding', 'THbuliding', 'pdl', 'backYH', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'THbuliding', 'Unknown', 'THbuliding', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'pdl', 'Unknown', 'Unknown', '8_bedroom', '8_bedroom']
 e=[['a', 'b'], ['b', 'c', 'd'], ['a', 'c', 'd', 'e'], ['a', 'd', 'e'], ['a', 'b', 'c'], ['a', 'b', 'c', 'd'], ['a'], ['a', 'b', 'c'], ['a', 'b', 'd'], ['b', 'c', 'e']]
 f=[['1', '2', '3', '4', '5'], ['1', '2', '4'], ['2', '3', '5'], ['3', '4', '5'], ['1', '2', '3', '4'], ['1', '2', '3']]
+lll=[['15', '15', '15', '15', '15',],['15', '3', '3', '3', '3', '5'], ['5', '6', '6', '6', '2'], ['2', '6', '6', '6', '6', '1', '1', '1', '3', '3', '2', '2', '3', '1', '3', '3', '3', '1', '1', '1', '1', '1', '4', '4', '4', '4', '4', '4'], ['4', '4', '4', '4', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '2', '2', '2', '2', '2', '13', '13', '13', '13', '13', '13', '15', '15', '15', '15', '13', '13', '13', '13', '13', '13', '2', '13', '13', '13', '13', '13', '13', '13', '2', '2', '2', '2', '2', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '15', '15', '15', '15', '15', '15', '15', '15', '15', '7', '7', '7', '7', '7', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '17', '4', '4', '4', '4', '4', '4', '6', '6', '6', '6', '5', '5', '5', '5', '2', '2', '2', '5', '5', '5', '5', '5', '3', '3', '3', '3', '3', '15', '15', '15', '15', '13', '13', '13', '13', '13', '13', '13', '13', '13']]
 
+ll=[ 8, 8, 8, 8, 8, 8, 8, 8, 15, 15, 15, 15, 15, 15, 15, 15, 15, 7, 7, 7, 7, 7, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 5, 5, 5, 5, 2, 2, 2, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 15, 15, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13]
 def kk(a):
     currtrn=1
     pre=0
@@ -57,7 +59,7 @@ def testFrequency():
     from fp_growth import find_frequent_itemsets
     k=[]
 
-    for itemset, support in find_frequent_itemsets(f, 4, True):
+    for itemset, support in find_frequent_itemsets(lll, 4, True):
         print itemset,support
 
         k.append([itemset,support])
@@ -97,4 +99,8 @@ if __name__=='__main__':
     #             break
     testFrequency()
     #print table2dic(b)
+    # print('-----------------')
+    # import apriori
+    # z=apriori.apriori(f,0.7)
+    # print(z)
 
