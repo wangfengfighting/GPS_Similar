@@ -59,7 +59,7 @@ def testFrequency():
     from fp_growth import find_frequent_itemsets
     k=[]
 
-    for itemset, support in find_frequent_itemsets(lll, 4, True):
+    for itemset, support in find_frequent_itemsets(lll, 0.7, True):
         print itemset,support
 
         k.append([itemset,support])
