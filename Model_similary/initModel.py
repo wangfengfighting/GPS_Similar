@@ -71,7 +71,6 @@ def getFrequentItem(filepath):
             dic_labelTag.append(tempLabel)
         time+=1
 
-
     #print(dic_labelTag)
     # dic_labelTag=[]
     # for item in labelTag:
@@ -83,11 +82,8 @@ def getFrequentItem(filepath):
     for itemset, support in find_frequent_itemsets(dic_labelTag,0.2, True):
         frequentSet.append([itemset,support])
         print itemset,support
-    return frequentSet
-
-
-
-    #return dic_labelTag,frequentSet
+    #return frequentSet #frequentSet is a set of label with support degree like [[['a','a'],5],.......]
+    return dic_labelTag,frequentSet
 
 def str2timeNum(str):
     timestr=str.split(' ')[1]
@@ -95,6 +91,10 @@ def str2timeNum(str):
     #print(temp)
     timeNum=int(temp[0])*60+int(temp[1])*1
     return  timeNum
+
+def calculateModel
+
+
 
 if __name__=='__main__':
 
