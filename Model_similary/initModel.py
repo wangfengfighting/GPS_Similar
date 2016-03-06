@@ -81,7 +81,7 @@ def getFrequentItem(filepath):
     frequentSet=[]  #frequentSet is the set of frequent item,like:[[['1'], 4], [['2', '1'], 4]] first is frequent tag,second is the support dgree.
     for itemset, support in find_frequent_itemsets(dic_labelTag,0.2, True):
         frequentSet.append([itemset,support])
-        print itemset,support
+        #print itemset,support
     #return frequentSet #frequentSet is a set of label with support degree like [[['a','a'],5],.......]
     return dic_labelTag,frequentSet
 
@@ -92,7 +92,47 @@ def str2timeNum(str):
     timeNum=int(temp[0])*60+int(temp[1])*1
     return  timeNum
 
-def calculateModel
+
+def getSequenceItem(filepath):  #get sequence pattern mining
+    dicfile=file('alllabelDic.pkl','rb')
+    labelDic=pickle.load(dicfile)
+    dic_labelTag=[]   #dic_labelTag is the all translated semantics label like ['1','2',.....] from ['bedroom','pdl'....]
+    labelTag=np.loadtxt(filepath,dtype=str,delimiter=',',usecols=(3,4))
+    time=1
+    while time<=48:
+        tempLabel=[]
+        for item in labelTag:
+
+            labtltime=str2timeNum(item[0]) # here labeltime is a number as we cut one hour into two pices of time(30 min)
+            if labtltime>= (time-1)*30 and labtltime<=time*30:
+                if item[1] in labelDic.keys():
+                    tempLabel.append(labelDic[item[1]])
+                else:
+                    tempLabel.append('999999999')
+        if tempLabel:
+            dic_labelTag.append(tempLabel)
+        time+=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def calculateModelSimilarity():
+
+    print()
 
 
 
@@ -100,5 +140,7 @@ if __name__=='__main__':
 
     #print getAll_label2dic()
 
-    print getFrequentItem('/home/lym/workspace/GPS_Similar/starlog/u001/8-29-2015/RCed_stoppoint.txt')
+    dic_labelTag,frequentSet= getFrequentItem('/home/lym/workspace/GPS_Similar/starlog/u001/8-29-2015/RCed_stoppoint.txt')
+    print(dic_labelTag)
+    print(frequentSet)
     #str2timeNum('2015-08-29 01:00:00')
