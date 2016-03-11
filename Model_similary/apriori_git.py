@@ -163,10 +163,11 @@ if __name__ == "__main__":
 
     # minSupport = options.minS
     # minConfidence = options.minC
-    infile='INTEGRATED-DATASET.csv'
+    #infile='INTEGRATED-DATASET.csv'
+    infile='/home/lym/workspace/GPS_Similar/starlog/u000/5-20-2014/appriori_sequence.csv'
     inFile = dataFromFile(infile)
-    minSupport=0.15
-    minConfidence=0.7
+    minSupport=0.5
+    minConfidence=0.8
     items, rules = runApriori(inFile, minSupport, minConfidence)
 
     printResults(items, rules)

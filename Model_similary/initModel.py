@@ -5,6 +5,7 @@ from getDir import GetDirName
 import os
 from fp_growth import find_frequent_itemsets
 import pickle
+import csv
 def getAll_label2dic():
     getdir=GetDirName()
     Fulldirlist=[]
@@ -114,8 +115,43 @@ def getSequenceItem(filepath):  #get sequence pattern mining
         time+=1
 
 
+def initAprioriitem():
+    getdir=GetDirName()
+    Fulldirlist=[]
+    parent_path = os.path.dirname(os.getcwd())
+    #print(parent_path)
+    dirlist=getdir.printPath(parent_path+os.sep+"starlog")
+    #print(dirlist)
+    for dir in dirlist:
+        #print(dir)
+        seconddir=(getdir.printPath(parent_path+os.sep+"starlog"+os.sep+dir))
+        for secdir in seconddir:
+            Fulldirlist.append(parent_path+os.sep+"starlog"+os.sep+dir+os.sep+secdir+os.sep+'RCed_stoppoint.txt')
 
 
+    for path in Fulldirlist:
+        data=np.loadtxt(path,dtype=str,delimiter=',',usecols=(3,4))
+        data_moring=[]
+        data_noon=[]
+        data_night=[]
+        i=1
+        for item in data:
+
+            labtltime=str2timeNum(item[0]) # here labeltime is a number as we cut one hour into two pices of time(30 min)
+            if labtltime>=0 and labtltime <=8*60:   #item is ['2015-07-07 00:00:00', '5_bedroom']
+                data_moring.append(item[1])
+            elif labtltime >8*60 and labtltime<= 16*60:
+                data_noon.append(item[1])
+            elif labtltime >16*60 and labtltime< 24*60:
+                data_night.append(item[1])
+        # print(data_night)
+        # print(data_moring)
+        savefile=open(path.replace('RCed_stoppoint.txt','appriori_sequence.csv'),'wb')
+        SaveFile=csv.writer(savefile)
+        SaveFile.writerow(data_moring)
+        SaveFile.writerow(data_noon)
+        SaveFile.writerow(data_night)
+        savefile.close()
 
 
 
@@ -137,10 +173,11 @@ def calculateModelSimilarity():
 
 
 if __name__=='__main__':
+    initAprioriitem()
 
     #print getAll_label2dic()
 
-    dic_labelTag,frequentSet= getFrequentItem('/home/lym/workspace/GPS_Similar/starlog/u001/8-29-2015/RCed_stoppoint.txt')
-    print(dic_labelTag)
-    print(frequentSet)
+    # dic_labelTag,frequentSet= getFrequentItem('/home/lym/workspace/GPS_Similar/starlog/u001/8-29-2015/RCed_stoppoint.txt')
+    # print(dic_labelTag)
+    # print(frequentSet)
     #str2timeNum('2015-08-29 01:00:00')
