@@ -164,7 +164,7 @@ if __name__ == "__main__":
     # minSupport = options.minS
     # minConfidence = options.minC
     #infile='INTEGRATED-DATASET.csv'
-    infile='/home/lym/workspace/GPS_Similar/starlog/u000/5-20-2014/appriori_sequence.csv'
+    infile='/home/lym/workspace/GPS_Similar/starlog/u001/7-15-2015/appriori_sequence.csv'
     inFile = dataFromFile(infile)
     minSupport=0.5
     minConfidence=0.8

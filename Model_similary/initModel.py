@@ -6,6 +6,7 @@ import os
 from fp_growth import find_frequent_itemsets
 import pickle
 import csv
+from apriori_git import *
 def getAll_label2dic():
     getdir=GetDirName()
     Fulldirlist=[]
@@ -154,6 +155,44 @@ def initAprioriitem():
         savefile.close()
 
 
+def getAprioriItem(minSupport=0.5,minConfidence=0.8):  #minSupport=0.5,minConfidence=0.8
+    getdir=GetDirName()
+    Fulldirlist=[]
+    parent_path = os.path.dirname(os.getcwd())
+    #print(parent_path)
+    dirlist=getdir.printPath(parent_path+os.sep+"starlog")
+    #print(dirlist)
+    for dir in dirlist:
+        #print(dir)
+        seconddir=(getdir.printPath(parent_path+os.sep+"starlog"+os.sep+dir))
+        for secdir in seconddir:
+            Fulldirlist.append(parent_path+os.sep+"starlog"+os.sep+dir+os.sep+secdir+os.sep+'appriori_sequence.csv')
+    #print(Fulldirlist)
+
+    for infile in Fulldirlist: #infile is the path of appriori_sequence.csv
+        #print(infile)
+        sequence_Frequence=[]
+        inFile = dataFromFile(infile)
+        items, rules = runApriori(inFile, minSupport, minConfidence)
+        #printResults(items, rules)
+        savefile=open(infile.replace('appriori_sequence.csv','sequencefrequence.txt'),'w')
+        for item, support in sorted(items, key=lambda (item, support): support):
+            #print "item: %s , %.3f" % (str(item), support)
+            seitem=list(item)
+            if len(seitem)>1:
+                sequence_Frequence.append(seitem)
+                for index in range(len(seitem)-1):
+                    savefile.write(seitem[index])
+                    savefile.write(',')
+                savefile.write(seitem[len(seitem)-1])
+                savefile.write('\n')
+
+
+        #savefile=open(infile.replace('appriori_sequence.csv','sequencefrequence.txt'),'w')
+        # for subitem in
+        # savefile.write(str(sequence_Frequence))
+        # savefile.close()
+    #return sequence_Frequence
 
 
 
@@ -165,15 +204,11 @@ def initAprioriitem():
 
 
 
-
-def calculateModelSimilarity():
-
-    print()
 
 
 
 if __name__=='__main__':
-    initAprioriitem()
+    #initAprioriitem()
 
     #print getAll_label2dic()
 
@@ -181,3 +216,5 @@ if __name__=='__main__':
     # print(dic_labelTag)
     # print(frequentSet)
     #str2timeNum('2015-08-29 01:00:00')
+    print('begin.......')
+    getAprioriItem()
