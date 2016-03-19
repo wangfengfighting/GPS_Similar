@@ -132,5 +132,7 @@ if __name__=='__main__':
     # import apriori
     # z=apriori.apriori(f,0.7)
     # print(z)
-    collection()
+    #collection()
+    t=[3]
+    print(t[-1])
 

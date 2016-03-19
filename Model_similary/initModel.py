@@ -1,5 +1,9 @@
 __author__ = 'WangFeng'
 #coding: utf-8
+'''
+First user initAprioriitem() to filter the data into csv.file,---->getAprioriItem() to detected the frequence pattern model
+---> and write into  sequencefrequence.txt file
+'''
 import numpy as np
 from getDir import GetDirName
 import os
@@ -34,17 +38,26 @@ def getAll_label2dic():
         for item in taglist:
             if item not in allLabelSet:
                 allLabelSet.append(item)
+
+    allLabelSet=list(set(allLabelSet))
     for index in range(len(allLabelSet)):
         allLabelDic[allLabelSet[index]]=str(index)
     output=open('alllabelDic.pkl','wb')
     pickle.dump(allLabelDic,output)
+    output.close()
     return allLabelSet,allLabelDic
 
 
 def getFrequentItem(filepath):
-    dicfile=file('alllabelDic.pkl','rb')
+    labelDic={}
+    dicfile=open('alllabelDic.pkl','rb')
     labelDic=pickle.load(dicfile)
     invertlabelDic=dict(izip(labelDic.itervalues(),labelDic.iterkeys()))
+    # for k in invertlabelDic:
+    #     print invertlabelDic[k]
+    #
+    # for k in labelDic:
+    #     print labelDic[k]
 
     dic_labelTag=[]
     # labelTag=np.loadtxt(filepath,dtype=str,delimiter=',',usecols=(4,))
@@ -71,6 +84,7 @@ def getFrequentItem(filepath):
                 if item[1] in labelDic.keys():
                     tempLabel.append(labelDic[item[1]])
                 else:
+                    print item[1],'-------------------------------------'
                     tempLabel.append('999999999')
         if tempLabel:
             dic_labelTag.append(tempLabel)
@@ -120,7 +134,7 @@ def str2timeNum(str):
 
 
 def getSequenceItem(filepath):  #get sequence pattern mining
-    dicfile=file('alllabelDic.pkl','rb')
+    dicfile=open('alllabelDic.pkl','rb')
     labelDic=pickle.load(dicfile)
     dic_labelTag=[]   #dic_labelTag is the all translated semantics label like ['1','2',.....] from ['bedroom','pdl'....]
     labelTag=np.loadtxt(filepath,dtype=str,delimiter=',',usecols=(3,4))
@@ -232,9 +246,9 @@ def getAprioriItem(minSupport=0.5,minConfidence=0.8):  #minSupport=0.5,minConfid
 
 
 if __name__=='__main__':
-    #initAprioriitem()
-
-    #print getAll_label2dic()
+     #initAprioriitem()
+    #
+    # print getAll_label2dic()
 
     getdir=GetDirName()
     Fulldirlist=[]
@@ -257,8 +271,22 @@ if __name__=='__main__':
 
 
     # dic_labelTag,frequentSet= getFrequentItem('/home/lym/workspace/GPS_Similar/starlog/u001/8-29-2015/RCed_stoppoint.txt')
-    # print(dic_labelTag)
-    # print(frequentSet)
+    #
+    # from itertools import izip
+    # d={}
+    # output=open('alllabelDic.pkl','rb')
+    # d=pickle.load(output)
+    # output.close()
+    # d1=dict(izip(d.itervalues(),d.iterkeys()))
+    # for i in frequentSet:
+    #     it=[]
+    #     for j in i[0]:
+    #         # if j=='999999999':
+    #         #     it.append('Unknown')
+    #         # else:
+    #             it.append(d1[j])
+    #     print it,i[1]
+
     # str2timeNum('2015-08-29 01:00:00')
     # print('begin.......')
     # getAprioriItem()

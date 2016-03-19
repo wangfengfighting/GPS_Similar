@@ -118,9 +118,9 @@ def printResults(items, rules):
     for item, support in sorted(items, key=lambda (item, support): support):
         print "item: %s , %.3f" % (str(item), support)
     print "\n------------------------ RULES:"
-    for rule, confidence in sorted(rules, key=lambda (rule, confidence): confidence):
-        pre, post = rule
-        print "Rule: %s ==> %s , %.3f" % (str(pre), str(post), confidence)
+    # for rule, confidence in sorted(rules, key=lambda (rule, confidence): confidence):
+    #     pre, post = rule
+    #     print "Rule: %s ==> %s , %.3f" % (str(pre), str(post), confidence)
 
 
 def dataFromFile(fname):
@@ -166,8 +166,8 @@ if __name__ == "__main__":
     #infile='INTEGRATED-DATASET.csv'
     infile='/home/lym/workspace/GPS_Similar/starlog/u001/7-15-2015/appriori_sequence.csv'
     inFile = dataFromFile(infile)
-    minSupport=0.5
-    minConfidence=0.8
+    minSupport=0.47
+    minConfidence=0.657
     items, rules = runApriori(inFile, minSupport, minConfidence)
 
-    printResults(items, rules)
+    printResults(items,rules)
