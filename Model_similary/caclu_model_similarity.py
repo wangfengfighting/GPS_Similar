@@ -4,11 +4,12 @@ from getDir import GetDirName
 import os
 import math
 import numpy as np
+from sklearn import preprocessing
 def getUserFloderpath():
     getdir=GetDirName()
     Usernamepath=[]
     parent_path = os.path.dirname(os.getcwd())
-    print(parent_path)
+    #print(parent_path)
     dirlist=getdir.printPath(parent_path+os.sep+"starlog")
     usernameGroup=dirlist
     #print (dirlist)
@@ -161,9 +162,83 @@ def currentSequenceSim(list1,list2,listinlist1,listinlist2):
         #print(matchcount,currentEN)
     return sim
 
+def main():
+    se_sim=[]
+    fe_sim=[]
+    avg_sim=[]
+    temp=[]
+    usergroup=getUserFloderpath()
+    for i in range(len(usergroup)-1):
+        for j in range(i,len(usergroup)):
+            user1=usergroup[i]
+            user2=usergroup[j]
+            temp1=[]
+            temp1.append(user1)
+            temp1.append(user2)
+            temp.append(temp1)
+            se_sim.append(sequence_mod_sim(user1,user2))
+            fe_sim.append(frequence_mod_sim(user1,user2))
+    se_max=se_sim[se_sim.index(max(se_sim))]
+    se_min=se_sim[se_sim.index(min(se_sim))]
+    fe_max=fe_sim[fe_sim.index(max(fe_sim))]
+    fe_min=fe_sim[fe_sim.index(min(fe_sim))]
+
+    #print se_sim,fe_sim
+
+    for i in range(len(se_sim)):
+        se_sim[i]=(se_sim[i]-se_min)/(se_max-se_min)
+        fe_sim[i]=(fe_sim[i]-fe_min)/(fe_max-fe_min)
+    #print se_sim,fe_sim
+    avg_sim=(np.array(se_sim)+np.array(fe_sim)).tolist()
+
+    #print(avg_sim)
+    output=open('result.txt','w')
+    for useritem in range(len(temp)):
+        output.write(temp[useritem][0])
+        output.write(',')
+        output.write(temp[useritem][1])
+        output.write(',')
+        output.write(str(avg_sim[useritem]))
+        output.write('\n')
+    output.close()
+
+    output1=open('result_fe.txt','w')
+    for useritem in range(len(temp)):
+        output1.write(temp[useritem][0])
+        output1.write(',')
+        output1.write(temp[useritem][1])
+        output1.write(',')
+        output1.write(str(fe_sim[useritem]))
+        output1.write('\n')
+    output1.close()
+
+
+    output2=open('result_se.txt','w')
+    for useritem in range(len(temp)):
+        output2.write(temp[useritem][0])
+        output2.write(',')
+        output2.write(temp[useritem][1])
+        output2.write(',')
+        output2.write(str(se_sim[useritem]))
+        output2.write('\n')
+    output2.close()
+
+
+
+
+
+    # np_se_sim=np.array(se_sim)
+    # np_fe_sim=np.array(fe_sim)
+    # print(np_se_sim)
+    # print np_fe_sim
+    # np_avg_sim=np_fe_sim+np_se_sim
+    # min_max_scaler= preprocessing.MinMaxScaler
+    # print  min_max_scaler.fit_transform(np_fe_sim)
+
+
 
 if __name__=='__main__':
-    print getUserFloderpath()
+    #print getUserFloderpath()
     #s=frequence_mod_sim('u001','u002')
     #print('u001:u002 is '+str(s))
     #
@@ -171,6 +246,11 @@ if __name__=='__main__':
     # print('u001:u001 is '+str(s1))
     # s2=frequence_mod_sim('u001','u003')
     # print('u001:u003 is '+str(s2))
-    #sequence_mod_sim('u001','u002')
-    #sequence_mod_sim('u001','u001')
+    # print frequence_mod_sim('u001','u002')
+    # print frequence_mod_sim('u002','u001')
+    # print sequence_mod_sim('u001','u002')
+    # print sequence_mod_sim('u002','u001')
+    # print sequence_mod_sim('u002','u003')
     #sequence_mod_sim('u001','u003')
+
+    main()
