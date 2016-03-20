@@ -133,6 +133,9 @@ if __name__=='__main__':
     # z=apriori.apriori(f,0.7)
     # print(z)
     #collection()
-    t=[3]
-    print(t[-1])
+
+    d=[['601','Unknown','backYH'],['101','baskball_5'],['101','Unknown'],['pdl','103'],['102'],['backYH']]
+    e=[['103','pdl'],['102'],['backYH']]
+    f=(  set(['Unknown','backYH']) & set(d[0]) )
+    print(len(f))
 

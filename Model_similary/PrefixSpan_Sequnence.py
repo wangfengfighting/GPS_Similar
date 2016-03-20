@@ -66,7 +66,7 @@ def collect_all2one():
             output.writelines(line)
         output.close()
     resultFloder=list(set(resultPath))
-    detect_Sequencepattern(resultFloder)
+    detect_Sequencepattern(resultFloder,0.01)
 
 
 def str2timeNum(str):
