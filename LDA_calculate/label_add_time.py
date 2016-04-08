@@ -13,9 +13,9 @@ def GetSemanticGPSpath():
     getdir=GetDirName()
     Fulldirlist=[]
     parent_path = os.path.dirname(os.getcwd())
-    dirlist=getdir.printPath(parent_path+"\\GPS_Get_PreProcesser")
+    dirlist=getdir.printPath(parent_path+os.sep+"GPS_Get_PreProcesser")
     for dir in dirlist:
-        Fulldirlist.append(parent_path+"\\GPS_Get_PreProcesser"+"\\"+dir+"\\"+'semanticGPS.txt')  #semanticGPS.txt是处理后的gps 加时间， 加label的文件信息
+        Fulldirlist.append(parent_path+os.sep+"GPS_Get_PreProcesser"+os.sep+dir+os.sep+'semanticGPS.txt')  #semanticGPS.txt是处理后的gps 加时间， 加label的文件信息
     return Fulldirlist
 
 def Add_timestamp(path):

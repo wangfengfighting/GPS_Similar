@@ -19,7 +19,7 @@ for i in range(0,len(data)):
         G.add_node(Dic[(data[i][1])])
 
 for i in range(0,len(data)):
-    G.add_edge(Dic[(data[i][0])],Dic[(data[i][1])],weight=float((data[i][2]))*9)
+    G.add_edge(Dic[(data[i][0])],Dic[(data[i][1])],weight=float((data[i][2]))*13)
 
 #pos=nx.circular_layout(G,iterations=20)
 pos=nx.shell_layout(G)
