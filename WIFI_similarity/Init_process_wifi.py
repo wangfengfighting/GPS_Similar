@@ -33,13 +33,13 @@ def wifi_file_filter(wifi_file_path):
                 if s['Wifi']['SSID']=='':
                     f.write('HIDE')
                 else:
-                    f.write(str(s['Wifi']['SSID']))
+                    f.write(str(s['Wifi']['SSID']).strip('\n'))
                 f.write(',')
-                f.write(str(s['Wifi']['BSSID']))
+                f.write(str(s['Wifi']['BSSID']).strip('\n'))
                 f.write(',')
-                f.write(str(s['Wifi']['state']))
+                f.write(str(s['Wifi']['state']).strip('\n'))
                 f.write(',')
-                f.write(str(s['Wifi']['time']))
+                f.write(str(s['Wifi']['time']).strip('\n'))
                 f.write('\n')
             f.close()
         else:
