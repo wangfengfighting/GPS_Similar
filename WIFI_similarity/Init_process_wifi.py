@@ -24,7 +24,7 @@ def wifi_file_filter(wifi_file_path):
             reload(sys)
             sys.setdefaultencoding( "utf-8" )
             f=open(path.replace('wifi.txt','Downwifi.txt'),'w')
-            f.writelines('SSID,BSSID,state,time')
+            f.writelines('SSID,BSSID,state,time,level')
             f.write('\n')
             prefile=open(path,'r').readlines()
             for line in prefile:
@@ -32,6 +32,8 @@ def wifi_file_filter(wifi_file_path):
                 #print s['Wifi']['SSID']
                 if s['Wifi']['SSID']=='':
                     f.write('HIDE')
+                elif not  s['Wifi']['SSID'].strip():
+                    f.write('Unkonwn')
                 else:
                     f.write(str(s['Wifi']['SSID']).strip('\n'))
                 f.write(',')
@@ -40,6 +42,8 @@ def wifi_file_filter(wifi_file_path):
                 f.write(str(s['Wifi']['state']).strip('\n'))
                 f.write(',')
                 f.write(str(s['Wifi']['time']).strip('\n'))
+                f.write(',')
+                f.write(str(s['Wifi']['level']).strip('\n'))
                 f.write('\n')
             f.close()
         else:
