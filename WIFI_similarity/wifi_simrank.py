@@ -43,16 +43,30 @@ def canclulate_wifi(user1,user2):
     user1filepath=parent_path+os.sep+"starlog"+os.sep+os.sep+user1+os.sep
     user2filepath=parent_path+os.sep+"starlog"+os.sep+os.sep+user2+os.sep
     num_floder=len(user1Floder) if len(user1Floder)<=len(user2Floder) else len(user2Floder)
+    sum_sim=0.0
     for i in range(num_floder):
         u1file=user1filepath+user1Floder[i]+os.sep+'Downwifi.txt'
         u2file=user2filepath+user2Floder[i]+os.sep+'Downwifi.txt'
 
-        print daily_wifi_sim(u1file,u2file)
-        print('--------------------------')
+        sum_sim+= daily_wifi_sim(u1file,u2file)
+    return sum_sim
+
 
 def daily_wifi_sim(file1,file2):
-    print(file1)
-    print(file2)
+    '''
+    give two user's wifi file. we devided the wifi file into 24 pices by 24hours.
+
+    :param file1:
+    :param file2:
+    :return:
+    '''
+    '''
+    :param file1:
+    :param file2:
+    :return:
+    '''
+    #print(file1)
+    #print(file2)
     wifiuser1list=[]
     wifiuser2list=[]
     user1data=np.loadtxt(file1,dtype=str,delimiter=',',skiprows=1,usecols=(0,3))
@@ -72,9 +86,9 @@ def daily_wifi_sim(file1,file2):
                 temp2.append((user2data[j][0]))
         #if len(temp2)>0:
         wifiuser2list.append(temp2)
-    print '------------------------------------------'
-    print(wifiuser1list)
-    print(wifiuser2list)
+    #print '------------------------------------------'
+    #print(wifiuser1list)
+    #print(wifiuser2list)
 
     # bulid wifi map------------------------------------------
     name1=file1.split(os.sep)[-3]
@@ -94,26 +108,20 @@ def daily_wifi_sim(file1,file2):
                 g2.append(tuple2)
                 del tuple2
                 #g2.append(tuple(name2,wifiuser2list[h_index][j]))
-
-    print(g1)
+    #print(g1)
     G = nx.DiGraph()
     G.add_edges_from(g1)
     G.add_edges_from(g2)
-
-
     t=simrank((G))
     key= list(G.node.keys())
-    print('*********')
-    print t[key.index(name1)][key.index(name2)]
+    #print('*********')
+    #print t[key.index(name1)][key.index(name2)]
     sum_wifi_sim+=t[key.index(name1)][key.index(name2)]
 
-    return sum_wifi_sim/24
+    return sum_wifi_sim#/24
 
     # print G.node.keys()[7:10]
     # #print(simrank(G1))
-
-
-
 
             # G = nx.DiGraph()
             # G.add_node('1')
@@ -124,15 +132,6 @@ def daily_wifi_sim(file1,file2):
 
             # # G.add_cycle([1,2,3,4])
             # G.add_edge(1,3)
-
-
-
-
-
-
-
-
-
 
 def str2Time(timeStr):
     t1 = datetime.datetime.strptime(timeStr,'%m-%d-%Y %H:%M:%S')
@@ -151,10 +150,19 @@ def main():
     # getdir=GetDirName()
     # parent_path = os.path.dirname(os.getcwd())
     # user1Floder=(getdir.printPath(parent_path+os.sep+"starlog"+os.sep+user[0]))
-
+    file=open('simlarBaseonGraphSim.txt','w')
     for i in range(len(user)):
         for j in range(i+1,len(user)):
-            canclulate_wifi(user[i],user[j])
+            #print user[i],user[j]
+            sim= canclulate_wifi(user[i],user[j])
+            file.write(user[i])
+            file.write(',')
+            file.write(user[j])
+            file.write(',')
+            file.write(str(sim))
+            file.write('\n')
+    file.close()
+
 
 
 
