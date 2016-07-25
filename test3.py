@@ -139,3 +139,7 @@ if __name__=='__main__':
     f=(  set(['Unknown','backYH']) & set(d[0]) )
     print(len(f))
 
+    s=['a','b','c','a']
+    s=list(set(s))
+    print(s)
+
