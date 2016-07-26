@@ -142,4 +142,10 @@ if __name__=='__main__':
     s=['a','b','c','a']
     s=list(set(s))
     print(s)
+    timeStr='11-13-2015 23:59:00'
+    import datetime
+    t1 = datetime.datetime.strptime(timeStr,'%m-%d-%Y %H:%M:%S')
+    h=t1.hour
+    print(h)
+    print h*60+int(t1.minute)
 
